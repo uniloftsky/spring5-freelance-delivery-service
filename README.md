@@ -10,7 +10,7 @@ Front-end is created and maintaned by [ThisSilenceIsMine](https://github.com/Thi
 
 ## Getting Started
 
-Freelance delivery API is a Spring Boot application built using Maven. You can build a jar file and run it from the command line:
+Freelance delivery API is a Spring Boot application built using Maven. You can build a jar file and run it from the command line (JDK 11 is required):
 
 ```bash
 git clone https://github.com/uniloftsky/spring5-freelance-delivery-service
