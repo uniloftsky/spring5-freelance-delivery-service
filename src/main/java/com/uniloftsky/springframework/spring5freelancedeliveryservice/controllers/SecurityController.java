@@ -31,4 +31,9 @@ public class SecurityController {
         return new ResponseEntity<>("OK", new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<Object> getLoginMessage() {
+        return new ResponseEntity<>("You are not logged in!", new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+    }
+
 }

@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/private/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
-                .formLogin().defaultSuccessUrl("/loginSuccess")
+                .formLogin().loginPage("/login").defaultSuccessUrl("/loginSuccess")
                 .and()
                 .logout().logoutSuccessUrl("/logoutSuccess")
                 .and().cors();
