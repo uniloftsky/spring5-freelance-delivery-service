@@ -2,6 +2,8 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.bootstrap
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.Item;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.ItemRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -18,10 +20,12 @@ public class DataLoader implements CommandLineRunner {
 
     private final TypeRepository typeRepository;
     private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
 
-    public DataLoader(TypeRepository typeRepository, UserRepository userRepository) {
+    public DataLoader(TypeRepository typeRepository, UserRepository userRepository, ItemRepository itemRepository) {
         this.typeRepository = typeRepository;
         this.userRepository = userRepository;
+        this.itemRepository = itemRepository;
     }
 
     @Override
@@ -42,5 +46,14 @@ public class DataLoader implements CommandLineRunner {
         user.setPassword(newPassword);
 
         userRepository.save(user);
+
+        itemRepository.saveAll(loadItems());
+    }
+
+    public List<Item> loadItems() {
+        List<Item> items = new ArrayList<>();
+        items.add(new Item("Salad", 499, "Fresh", "https://cdn.auth0.com/blog/whatabyte/salad-sm.png"));
+        items.add(new Item("Salad1", 499, "Fresh", "https://cdn.auth0.com/blog/whatabyte/salad-sm.png"));
+        return items;
     }
 }

@@ -1,29 +1,42 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.TypeDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.Item;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.ItemRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.TypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
-@RequestMapping(path = "/api/v1/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
-@CrossOrigin(origins = "*")
 public class TypeController {
 
     private final TypeService typeService;
+    private final ItemRepository itemRepository;
 
-    public TypeController(TypeService typeService) {
+    public TypeController(TypeService typeService, ItemRepository itemRepository) {
         this.typeService = typeService;
+        this.itemRepository = itemRepository;
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/public/types", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<TypeDTO> getTypes() {
         return typeService.getAll();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/menu/items", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Item> getMenuItems() {
+        return itemRepository.findAll();
     }
 
     @GetMapping("/private/types")
