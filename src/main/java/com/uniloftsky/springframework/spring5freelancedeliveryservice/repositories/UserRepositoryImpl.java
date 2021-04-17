@@ -9,6 +9,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
@@ -29,6 +33,23 @@ public class UserRepositoryImpl implements UserRepository {
         String getUsersUri = managementApi + "users/";
         HttpEntity<User> response = restTemplate.exchange(getUsersUri + id, HttpMethod.GET, getTokenHeader(), User.class);
         return response.getBody();
+    }
+
+    @Override
+    public Set<User> findAll() {
+        String getUsersUri = managementApi + "users";
+        HttpEntity<User[]> response = restTemplate.exchange(getUsersUri, HttpMethod.GET, getTokenHeader(), User[].class);
+        return new HashSet<>(Arrays.asList(response.getBody()));
+    }
+
+    @Override
+    public User save(User user) {
+        return null;
+    }
+
+    @Override
+    public User patch(User user) {
+        return null;
     }
 
     private HttpEntity<?> getTokenHeader() {

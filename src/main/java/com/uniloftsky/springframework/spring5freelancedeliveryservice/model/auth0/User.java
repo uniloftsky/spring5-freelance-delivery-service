@@ -25,23 +25,4 @@ public class User {
     private String family_name;
     private String given_name;
 
-/*    public User(String login, String password, String email, String firstName, String lastName, String phoneNumber) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-    }
-
-    private String login;
-    private String password;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Notification> notifications = new HashSet<>();*/
-
 }

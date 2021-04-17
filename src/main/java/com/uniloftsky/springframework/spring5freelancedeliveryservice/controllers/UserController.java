@@ -5,6 +5,8 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.U
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/v1/")
 public class UserController {
@@ -25,6 +27,12 @@ public class UserController {
     @GetMapping("/users/{id}")
     public User getUserById(@PathVariable("id") String id) {
         return userService.findById(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/users")
+    public Set<User> getAllUsers() {
+        return userService.findAll();
     }
 
 }
