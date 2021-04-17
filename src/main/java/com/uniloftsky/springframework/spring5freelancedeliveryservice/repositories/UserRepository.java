@@ -1,14 +1,9 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 
-import java.util.Optional;
+public interface UserRepository {
 
-@Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-
-    Optional<User> findByLogin(String login);
+    User findById(String id);
 
 }

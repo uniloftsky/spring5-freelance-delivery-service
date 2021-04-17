@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

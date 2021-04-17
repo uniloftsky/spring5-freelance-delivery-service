@@ -1,12 +1,10 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.UserMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,10 +19,10 @@ public class SecurityController {
         this.userService = userService;
     }
 
-    @GetMapping("/loginSuccess")
+/*    @GetMapping("/loginSuccess")
     public UserDTO getAuthoredUser(Authentication authentication) {
         return userMapper.userToUserDTO(userService.findByLogin(authentication.getName()));
-    }
+    }*/
 
     @GetMapping("/logoutSuccess")
     public ResponseEntity<Object> getLogoutMessage() {
