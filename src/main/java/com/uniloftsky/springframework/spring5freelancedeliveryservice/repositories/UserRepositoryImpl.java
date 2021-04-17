@@ -8,33 +8,32 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private String domain;
-    private final String token;
+    @Value("${auth0.management.api}")
+    private String managementApi;
 
-    private final String getUserUri = "https://" + domain + "/api/v2/users/";
+    @Value("${auth0.management.token}")
+    private String token;
 
     private final RestTemplate restTemplate;
 
-    public UserRepositoryImpl(@Value("${auth0.domain}") String domain, @Value("${auth0.management.token}") String token, RestTemplate restTemplate) {
-        this.domain = domain;
-        this.token = token;
+    public UserRepositoryImpl(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     @Override
     public User findById(String id) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                .fromUriString(getUserUri + id);
-        System.out.println(uriBuilder.toUriString());
-        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-        headers.add("authorization", token);
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        HttpEntity<User> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, entity, User.class);
+        String getUsersUri = managementApi + "users/";
+        HttpEntity<User> response = restTemplate.exchange(getUsersUri + id, HttpMethod.GET, getTokenHeader(), User.class);
         return response.getBody();
+    }
+
+    private HttpEntity<?> getTokenHeader() {
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("authorization", "Bearer " + token);
+        return new HttpEntity<>(headers);
     }
 }
