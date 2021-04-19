@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -43,13 +44,41 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
-        return null;
+    public User save(String userId, UserDTO userDTO) {
+        User foundUser = findById(userId);
+        UserDTO patchUser = foundUser.clone();
+        if (userDTO.getEmail() != null) {
+            patchUser.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getFamily_name() != null) {
+            patchUser.setFamily_name(userDTO.getFamily_name());
+        }
+        if (userDTO.getGiven_name() != null) {
+            patchUser.setGiven_name(userDTO.getGiven_name());
+        }
+        if (userDTO.getName() != null) {
+            patchUser.setName(userDTO.getName());
+        }
+        if (userDTO.getPicture() != null) {
+            patchUser.setPicture(userDTO.getPicture());
+        }
+        if (userDTO.getUserMetadata() != null) {
+            patchUser.setUserMetadata(userDTO.getUserMetadata());
+        }
+        if (userDTO.getNickname() != null) {
+            patchUser.setNickname(userDTO.getNickname());
+        }
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("authorization", "Bearer " + token);
+        String getUsersUri = managementApi + "users/";
+        HttpEntity<UserDTO> userEntity = new HttpEntity<>(patchUser, headers);
+        return restTemplate.patchForObject(getUsersUri + userId, userEntity, User.class);
     }
 
     @Override
-    public User patch(User user) {
-        return null;
+    public void delete(String userId) {
+        String getUsersUri = managementApi + "users/";
+        restTemplate.exchange(getUsersUri + userId, HttpMethod.DELETE, getTokenHeader(), Void.class);
     }
 
     private HttpEntity<?> getTokenHeader() {

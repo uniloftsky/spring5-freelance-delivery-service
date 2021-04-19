@@ -24,4 +24,6 @@ public class Driver extends BaseEntity {
     @OneToMany(mappedBy = "executor", cascade = CascadeType.ALL)
     private Set<Advertisement> advertisements = new HashSet<>();
 
+    private String userId;
+
 }

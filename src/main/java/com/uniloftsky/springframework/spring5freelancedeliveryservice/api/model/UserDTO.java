@@ -1,34 +1,38 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.UserMetadata;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @NoArgsConstructor
 @Getter
 @Setter
 public class UserDTO {
 
-    public UserDTO(String login, String password, String email, String firstName, String lastName, String phoneNumber, Set<NotificationDTO> notifications) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.notifications = notifications;
+    public UserDTO(User user) {
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.nickname = user.getNickname();
+        this.family_name = user.getFamily_name();
+        this.given_name = user.getGiven_name();
+        this.picture = user.getPicture();
+        this.userMetadata = getUserMetadata();
     }
 
-    private Long id;
-    private String login;
-    private String password;
     private String email;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
-    private Set<NotificationDTO> notifications = new HashSet<>();
+    private boolean email_verified;
+
+    @JsonProperty("user_metadata")
+    private UserMetadata userMetadata;
+
+    private String name;
+    private String nickname;
+    private String picture;
+    private String family_name;
+    private String given_name;
 
 }

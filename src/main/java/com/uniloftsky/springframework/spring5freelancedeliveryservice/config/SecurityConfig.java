@@ -28,10 +28,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/api/menu/items/**").permitAll() // GET requests don't need auth
                 .mvcMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                .anyRequest()
-                .authenticated()
+                .mvcMatchers(HttpMethod.PATCH, "/api/v1/**").permitAll()
+                .mvcMatchers(HttpMethod.DELETE, "/api/v1/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .cors()
                 .configurationSource(corsConfigurationSource())
@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .oauth2ResourceServer()
                 .jwt()
                 .decoder(jwtDecoder());
+        http.csrf().disable();
     }
 
     CorsConfigurationSource corsConfigurationSource() {
@@ -46,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedMethods(List.of(
                 HttpMethod.GET.name(),
                 HttpMethod.PUT.name(),
+                HttpMethod.PATCH.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.DELETE.name()
         ));

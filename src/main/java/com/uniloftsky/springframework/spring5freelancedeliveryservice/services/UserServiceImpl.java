@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
-        return null;
+    public User save(String userId, UserDTO user) {
+        return userRepository.save(userId, user);
     }
 
     @Override
-    public User patch(User user) {
-        return null;
+    public void delete(String userId) {
+        userRepository.delete(userId);
     }
 }

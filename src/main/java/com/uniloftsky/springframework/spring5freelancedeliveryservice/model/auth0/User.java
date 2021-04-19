@@ -1,5 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +20,19 @@ public class User {
     private String email;
     private boolean email_verified;
     private Set<Identity> identities;
+
+    @JsonProperty("user_metadata")
+    private UserMetadata userMetadata;
+
     private String name;
     private String nickname;
     private String picture;
     private String user_id;
     private String family_name;
     private String given_name;
+
+    public UserDTO clone() {
+        return new UserDTO(this);
+    }
 
 }
