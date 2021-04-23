@@ -10,6 +10,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,10 +45,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(String userId, UserDTO userDTO) {
+    public User save(String userId, UserDTO userDTO) throws IllegalAccessException {
         User foundUser = findById(userId);
         UserDTO patchUser = foundUser.clone();
-        if (userDTO.getEmail() != null) {
+        Field[] userFields = patchUser.getClass().getDeclaredFields();
+        for (Field field : userFields) {
+            field.setAccessible(true);
+            if (field.get(userDTO) != null) {
+                field.set(patchUser, field.get(userDTO));
+            }
+        }
+        /*if (userDTO.getEmail() != null) {
             patchUser.setEmail(userDTO.getEmail());
         }
         if (userDTO.getFamily_name() != null) {
@@ -67,7 +75,7 @@ public class UserRepositoryImpl implements UserRepository {
         }
         if (userDTO.getNickname() != null) {
             patchUser.setNickname(userDTO.getNickname());
-        }
+        }*/
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("authorization", "Bearer " + token);
         String getUsersUri = managementApi + "users/";

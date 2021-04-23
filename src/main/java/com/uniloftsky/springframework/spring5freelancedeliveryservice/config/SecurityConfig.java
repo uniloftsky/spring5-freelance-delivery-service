@@ -31,6 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                 .mvcMatchers(HttpMethod.PATCH, "/api/v1/**").permitAll()
                 .mvcMatchers(HttpMethod.DELETE, "/api/v1/**").permitAll()
+                .mvcMatchers("/h2-console/**").permitAll()
+//                .mvcMatchers(HttpMethod.GET, "/api").permitAll()
+                .mvcMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors()
@@ -40,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .jwt()
                 .decoder(jwtDecoder());
         http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     CorsConfigurationSource corsConfigurationSource() {

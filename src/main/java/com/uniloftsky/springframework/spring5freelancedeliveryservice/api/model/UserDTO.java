@@ -20,7 +20,11 @@ public class UserDTO {
         this.family_name = user.getFamily_name();
         this.given_name = user.getGiven_name();
         this.picture = user.getPicture();
-        this.userMetadata = getUserMetadata();
+        if (user.getUser_metadata() == null) {
+            this.userMetadata = new UserMetadata();
+        } else {
+            this.userMetadata = user.getUser_metadata();
+        }
     }
 
     private String email;

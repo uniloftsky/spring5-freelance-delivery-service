@@ -10,9 +10,9 @@ import java.time.LocalDate;
 public class NotificationDTO {
 
     private Long id;
-    private LocalDate timeStamp;
+    private LocalDate time_stamp;
     private String title;
     private String message;
-    private UserDTO user;
+    private String user_id;
 
 }

@@ -8,6 +8,6 @@ import java.util.Set;
 public interface UserService {
     User findById(String id);
     Set<User> findAll();
-    User save(String userId, UserDTO user);
+    User save(String userId, UserDTO user) throws IllegalAccessException;
     void delete(String userId);
 }

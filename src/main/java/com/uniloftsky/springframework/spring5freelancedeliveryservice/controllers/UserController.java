@@ -25,6 +25,8 @@ public class UserController {
         return userService.findById(id);
     }*/
 
+
+
     @GetMapping("/users/{id}")
     public User getUserById(@PathVariable("id") String id, HttpServletResponse response) {
         return userService.findById(id);
@@ -38,7 +40,7 @@ public class UserController {
 
     @PatchMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User patchUser(@PathVariable("id") String id, @RequestBody UserDTO user) {
+    public User patchUser(@PathVariable("id") String id, @RequestBody UserDTO user) throws IllegalAccessException {
         return userService.save(id, user);
     }
 
