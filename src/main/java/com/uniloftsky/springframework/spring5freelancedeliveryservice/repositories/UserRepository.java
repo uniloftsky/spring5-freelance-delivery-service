@@ -11,7 +11,7 @@ public interface UserRepository {
 
     Set<User> findAll();
 
-    User save(String userId, UserDTO user) throws IllegalAccessException;
+    User save(User user, UserDTO userDTO) throws IllegalAccessException;
 
     void delete(String id);
 

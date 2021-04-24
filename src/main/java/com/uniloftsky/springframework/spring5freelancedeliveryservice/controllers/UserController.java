@@ -1,12 +1,14 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 @RestController
@@ -19,15 +21,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    /*@ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/users", params = "id")
-    public Set<UserDTO> getUsers(@RequestParam("id") String id) {
-        return userService.findById(id);
-    }*/
+    @GetMapping("/user")
+    public User getUser(Authentication authentication) {
+        return userService.findById(authentication.getName());
+    }
 
+    @GetMapping("/user/notifications")
+    public Set<Notification> getUserNotifications(Authentication authentication) {
+        return userService.findById(authentication.getName()).getUser_metadata().getNotifications();
+    }
 
+    @GetMapping("/user/advertisements")
+    public Set<Advertisement> getUserAdvertisements(Authentication authentication) {
+        return userService.findById(authentication.getName()).getUser_metadata().getAdvertisements();
+    }
 
-    @GetMapping("/users/{id}")
+/*    @GetMapping("/users/{id}")
     public User getUserById(@PathVariable("id") String id, HttpServletResponse response) {
         return userService.findById(id);
     }
@@ -54,6 +63,6 @@ public class UserController {
     @PostMapping("/users")
     public String testMethod(@RequestBody UserDTO user) {
         return "string";
-    }
+    }*/
 
 }

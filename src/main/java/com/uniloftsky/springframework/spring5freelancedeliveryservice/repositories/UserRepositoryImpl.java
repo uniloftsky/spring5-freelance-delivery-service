@@ -45,9 +45,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(String userId, UserDTO userDTO) throws IllegalAccessException {
-        User foundUser = findById(userId);
-        UserDTO patchUser = foundUser.clone();
+    public User save(User user, UserDTO userDTO) throws IllegalAccessException {
+        UserDTO patchUser = user.clone();
         Field[] userFields = patchUser.getClass().getDeclaredFields();
         for (Field field : userFields) {
             field.setAccessible(true);
@@ -55,32 +54,11 @@ public class UserRepositoryImpl implements UserRepository {
                 field.set(patchUser, field.get(userDTO));
             }
         }
-        /*if (userDTO.getEmail() != null) {
-            patchUser.setEmail(userDTO.getEmail());
-        }
-        if (userDTO.getFamily_name() != null) {
-            patchUser.setFamily_name(userDTO.getFamily_name());
-        }
-        if (userDTO.getGiven_name() != null) {
-            patchUser.setGiven_name(userDTO.getGiven_name());
-        }
-        if (userDTO.getName() != null) {
-            patchUser.setName(userDTO.getName());
-        }
-        if (userDTO.getPicture() != null) {
-            patchUser.setPicture(userDTO.getPicture());
-        }
-        if (userDTO.getUserMetadata() != null) {
-            patchUser.setUserMetadata(userDTO.getUserMetadata());
-        }
-        if (userDTO.getNickname() != null) {
-            patchUser.setNickname(userDTO.getNickname());
-        }*/
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("authorization", "Bearer " + token);
         String getUsersUri = managementApi + "users/";
         HttpEntity<UserDTO> userEntity = new HttpEntity<>(patchUser, headers);
-        return restTemplate.patchForObject(getUsersUri + userId, userEntity, User.class);
+        return restTemplate.patchForObject(getUsersUri + user.getUser_id(), userEntity, User.class);
     }
 
     @Override

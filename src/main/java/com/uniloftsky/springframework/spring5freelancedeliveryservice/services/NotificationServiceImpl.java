@@ -38,19 +38,25 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification save(Notification notification, String userId) throws IllegalAccessException {
+    public Notification save(Notification notification, User user) throws IllegalAccessException {
         notificationRepository.save(notification);
-        User user = userService.findById(userId);
         UserDTO userDTO = user.clone();
-        userDTO.getUserMetadata().getNotifications().remove(findById(notification.getId()));
+        userDTO.getUserMetadata().getNotifications().removeIf(e -> e.getId().equals(notification.getId()));
         userDTO.getUserMetadata().getNotifications().add(notification);
-        System.out.println();
-        /*userService.save(userId, userDTO);*/
+        userService.save(user, userDTO);
         return notification;
     }
 
     @Override
     public void delete(Notification notification) {
+        notificationRepository.delete(notification);
+    }
+
+    @Override
+    public void delete(Notification notification, User user) throws IllegalAccessException {
+        UserDTO userDTO = user.clone();
+        userDTO.getUserMetadata().getNotifications().removeIf(e -> e.getId().equals(notification.getId()));
+        userService.save(user, userDTO);
         notificationRepository.delete(notification);
     }
 }

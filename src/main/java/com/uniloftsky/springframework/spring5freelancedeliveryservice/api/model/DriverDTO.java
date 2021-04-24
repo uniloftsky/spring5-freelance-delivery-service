@@ -16,5 +16,6 @@ public class DriverDTO {
     private String description;
     private Set<TypeDTO> types = new HashSet<>();
     private Set<AdvertisementDTO> advertisements = new HashSet<>();
+    private String user_id;
 
 }
