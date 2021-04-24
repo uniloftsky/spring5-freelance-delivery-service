@@ -3,6 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.bootstrap
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.NotificationMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.UserMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.Item;
@@ -11,6 +12,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositori
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.UserRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.AdvertisementService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.NotificationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -31,9 +33,10 @@ public class DataLoader implements CommandLineRunner {
     private final NotificationRepository notificationRepository;
     private final NotificationService notificationService;
     private final AdvertisementService advertisementService;
+    private final DriverService driverService;
     private final UserMapper userMapper;
 
-    public DataLoader(TypeRepository typeRepository, UserRepository userRepository, ItemRepository itemRepository, NotificationMapper notificationMapper, NotificationRepository notificationRepository, NotificationService notificationService, AdvertisementService advertisementService, UserMapper userMapper) {
+    public DataLoader(TypeRepository typeRepository, UserRepository userRepository, ItemRepository itemRepository, NotificationMapper notificationMapper, NotificationRepository notificationRepository, NotificationService notificationService, AdvertisementService advertisementService, DriverService driverService, UserMapper userMapper) {
         this.typeRepository = typeRepository;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
@@ -41,6 +44,7 @@ public class DataLoader implements CommandLineRunner {
         this.notificationRepository = notificationRepository;
         this.notificationService = notificationService;
         this.advertisementService = advertisementService;
+        this.driverService = driverService;
         this.userMapper = userMapper;
     }
 
@@ -51,17 +55,17 @@ public class DataLoader implements CommandLineRunner {
         types.add(new Type("Короткі відстані"));
         types.add(new Type("Довгі відстані"));
         types.add(new Type("Великі вантажі"));
+        typeRepository.saveAll(types);
 
         Notification notification1 = new Notification(LocalDate.now(), "Notification1", "Notification message", "auth0|607d94db1c9629006daa7adf");
         notificationService.save(notification1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
-/*        Driver driver = new Driver();
+        Driver driver = new Driver();
         driver.setCar("Car");
         driver.setDescription("I'm driver");
         driver.setExperience(10);
         driver.setTypes(types);
-        driver.setUserId("auth0|607d94db1c9629006daa7adf");*/
-
-        typeRepository.saveAll(types);
+        driver.setUserId("auth0|607d94db1c9629006daa7adf");
+        driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         Advertisement advertisement1 = new Advertisement();
         advertisement1.setDate(LocalDate.now());

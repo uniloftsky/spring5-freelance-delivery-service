@@ -1,8 +1,10 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,11 @@ import java.util.Set;
 public class UserController {
 
     private final UserService userService;
+    private final DriverService driverService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, DriverService driverService) {
         this.userService = userService;
+        this.driverService = driverService;
     }
 
     @GetMapping("/user")
@@ -34,6 +38,15 @@ public class UserController {
     @GetMapping("/user/advertisements")
     public Set<Advertisement> getUserAdvertisements(Authentication authentication) {
         return userService.findById(authentication.getName()).getUser_metadata().getAdvertisements();
+    }
+
+    @GetMapping("/user/driver")
+    public DriverDTO getUserDriver(Authentication authentication) {
+        if (userService.findById(authentication.getName()).getUser_metadata().isDriver()) {
+            return driverService.findByUserId(authentication.getName());
+        } else {
+            throw new RuntimeException("User is not a driver!");
+        }
     }
 
 /*    @GetMapping("/users/{id}")
