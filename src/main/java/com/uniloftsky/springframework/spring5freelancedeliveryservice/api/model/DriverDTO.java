@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,7 @@ public class DriverDTO {
     private Integer experience;
     private String description;
     private Set<TypeDTO> types = new HashSet<>();
-    private Set<AdvertisementDTO> advertisements = new HashSet<>();
+    private Set<Advertisement> advertisements = new HashSet<>();
     private String user_id;
 
 }
