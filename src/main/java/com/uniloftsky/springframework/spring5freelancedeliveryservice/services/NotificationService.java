@@ -14,9 +14,9 @@ public interface NotificationService {
     Set<Notification> findAll();
 
     Notification save(Notification notification);
-    Notification save(Notification notification, User user) throws IllegalAccessException;
+    Notification save(Notification notification, User user);
 
     void delete(Long notificationId);
-    void delete(Long notificationId, User user) throws IllegalAccessException;
+    void delete(Long notificationId, User user);
 
 }

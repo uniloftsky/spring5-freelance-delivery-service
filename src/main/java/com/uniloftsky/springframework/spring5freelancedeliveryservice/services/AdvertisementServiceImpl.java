@@ -50,7 +50,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public Advertisement save(Advertisement advertisement, User user) throws IllegalAccessException {
+    public Advertisement save(Advertisement advertisement, User user) {
         advertisementRepository.save(advertisement);
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
@@ -65,7 +65,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public void delete(Long advertisementId, User user) throws IllegalAccessException {
+    public void delete(Long advertisementId, User user) {
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisementId));
         userService.save(user, userDTO);

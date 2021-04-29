@@ -45,13 +45,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User user, UserDTO userDTO) throws IllegalAccessException {
+    public User save(User user, UserDTO userDTO) {
         UserDTO patchUser = user.clone();
         Field[] userFields = patchUser.getClass().getDeclaredFields();
         for (Field field : userFields) {
             field.setAccessible(true);
-            if (field.get(userDTO) != null) {
-                field.set(patchUser, field.get(userDTO));
+            try {
+                if (field.get(userDTO) != null) {
+                    field.set(patchUser, field.get(userDTO));
+                }
+            } catch (IllegalAccessException e) {
+                System.out.println(e.getMessage());
             }
         }
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();

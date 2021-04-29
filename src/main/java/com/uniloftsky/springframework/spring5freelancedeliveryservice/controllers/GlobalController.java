@@ -12,7 +12,7 @@ public class GlobalController {
 
     @ExceptionHandler(NotFound.class)
     public ResponseEntity<Object> handleNotFound(Exception exception) {
-        return new ResponseEntity<Object>("Resource not found.\nMessage: " + exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Resource not found.\nMessage: " + exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
 }

@@ -15,10 +15,10 @@ public interface AdvertisementService {
 
     Advertisement save(Advertisement advertisement);
 
-    Advertisement save(Advertisement advertisement, User user) throws IllegalAccessException;
+    Advertisement save(Advertisement advertisement, User user);
 
     void delete(Long advertisementId);
 
-    void delete(Long advertisementId, User user) throws IllegalAccessException;
+    void delete(Long advertisementId, User user);
 
 }

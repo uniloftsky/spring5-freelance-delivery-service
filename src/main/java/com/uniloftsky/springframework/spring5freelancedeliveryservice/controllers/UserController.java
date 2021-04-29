@@ -71,9 +71,14 @@ public class UserController {
     }
 
     @DeleteMapping("/advertisements/{id}")
-    public ResponseEntity<String> deleteUserAdvertisement(@PathVariable("id") Long id, Authentication authentication) throws IllegalAccessException {
+    public ResponseEntity<String> deleteUserAdvertisement(@PathVariable("id") Long id, Authentication authentication) {
         advertisementService.delete(id, userService.findById(authentication.getName()));
         return new ResponseEntity<>("Advertisement deleted", new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @PostMapping("/advertisements")
+    public Advertisement createUserAdvertisement(@RequestBody Advertisement advertisement, Authentication authentication) {
+        return advertisementService.save(advertisement, userService.findById(authentication.getName()));
     }
 
     //End of advertisements block

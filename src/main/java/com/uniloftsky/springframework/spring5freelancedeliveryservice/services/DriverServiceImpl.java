@@ -52,7 +52,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver save(Driver driver, User user) throws IllegalAccessException {
+    public Driver save(Driver driver, User user) {
         save(driverMapper.driverToDriverDTO(driver));
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().setDriver(true);
@@ -66,7 +66,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public void delete(Long driverId, User user) throws IllegalAccessException {
+    public void delete(Long driverId, User user) {
         driverRepository.delete(driverMapper.driverDTOToDriver(findById(driverId)));
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().setDriver(false);

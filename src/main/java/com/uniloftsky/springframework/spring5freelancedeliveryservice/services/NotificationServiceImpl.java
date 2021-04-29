@@ -50,7 +50,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification save(Notification notification, User user) throws IllegalAccessException {
+    public Notification save(Notification notification, User user) {
         notificationRepository.save(notification);
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getNotifications().removeIf(e -> e.getId().equals(notification.getId()));
@@ -65,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void delete(Long notificationId, User user) throws IllegalAccessException {
+    public void delete(Long notificationId, User user)  {
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getNotifications().removeIf(e -> e.getId().equals(notificationId));
         userService.save(user, userDTO);

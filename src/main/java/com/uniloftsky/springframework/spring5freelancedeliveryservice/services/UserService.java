@@ -11,7 +11,7 @@ public interface UserService {
 
     Set<User> findAll();
 
-    User save(User user, UserDTO userDTO) throws IllegalAccessException;
+    User save(User user, UserDTO userDTO);
 
     void delete(String userId);
 }

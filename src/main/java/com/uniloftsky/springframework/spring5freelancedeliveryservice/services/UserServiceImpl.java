@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user, UserDTO userDTO) throws IllegalAccessException {
+    public User save(User user, UserDTO userDTO) {
         return userRepository.save(user, userDTO);
     }
 

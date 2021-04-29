@@ -16,10 +16,10 @@ public interface DriverService {
 
     DriverDTO save(DriverDTO driverDTO);
 
-    Driver save(Driver driver, User user) throws IllegalAccessException;
+    Driver save(Driver driver, User user);
 
     void delete(Long driverId);
 
-    void delete(Long driverId, User user) throws IllegalAccessException;
+    void delete(Long driverId, User user);
 
 }
