@@ -7,6 +7,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositori
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,6 +24,17 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Notification findById(Long id) {
         return notificationRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public Notification findUserNotification(Long id, String userId) {
+        Optional<Notification> notificationOptional = userService.findById(userId).getUser_metadata().getNotifications()
+                .stream().filter(e -> e.getId().equals(id)).findFirst();
+        if (notificationOptional.isEmpty()) {
+            throw new RuntimeException("User has not expected notification!");
+        } else {
+            return notificationOptional.get();
+        }
     }
 
     @Override
@@ -48,15 +60,15 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void delete(Notification notification) {
-        notificationRepository.delete(notification);
+    public void delete(Long notificationId) {
+        notificationRepository.delete(findById(notificationId));
     }
 
     @Override
-    public void delete(Notification notification, User user) throws IllegalAccessException {
+    public void delete(Long notificationId, User user) throws IllegalAccessException {
         UserDTO userDTO = user.clone();
-        userDTO.getUserMetadata().getNotifications().removeIf(e -> e.getId().equals(notification.getId()));
+        userDTO.getUserMetadata().getNotifications().removeIf(e -> e.getId().equals(notificationId));
         userService.save(user, userDTO);
-        notificationRepository.delete(notification);
+        notificationRepository.delete(findById(notificationId));
     }
 }

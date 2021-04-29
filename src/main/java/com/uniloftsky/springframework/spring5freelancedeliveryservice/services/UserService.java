@@ -6,8 +6,12 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth
 import java.util.Set;
 
 public interface UserService {
+
     User findById(String id);
+
     Set<User> findAll();
+
     User save(User user, UserDTO userDTO) throws IllegalAccessException;
+
     void delete(String userId);
 }

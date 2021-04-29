@@ -8,13 +8,15 @@ import java.util.Set;
 public interface NotificationService {
 
     Notification findById(Long id);
+    Notification findUserNotification(Long id, String userId);
+
 
     Set<Notification> findAll();
 
     Notification save(Notification notification);
     Notification save(Notification notification, User user) throws IllegalAccessException;
 
-    void delete(Notification notification);
-    void delete(Notification notification, User user) throws IllegalAccessException;
+    void delete(Long notificationId);
+    void delete(Long notificationId, User user) throws IllegalAccessException;
 
 }

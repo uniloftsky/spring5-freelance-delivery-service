@@ -7,6 +7,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositori
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,6 +24,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     public Advertisement findById(Long id) {
         return advertisementRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public Advertisement findUserAdvertisement(Long id, String userId) {
+        Optional<Advertisement> advertisementOptional = userService.findById(userId).getUser_metadata().getAdvertisements()
+                .stream().filter(e -> e.getId().equals((id))).findFirst();
+        if (advertisementOptional.isEmpty()) {
+            throw new RuntimeException("User has not expected advertisement!");
+        } else {
+            return advertisementOptional.get();
+        }
     }
 
     @Override
@@ -48,15 +60,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public void delete(Advertisement advertisement) {
-        advertisementRepository.delete(advertisement);
+    public void delete(Long advertisementId) {
+        advertisementRepository.delete(findById(advertisementId));
     }
 
     @Override
-    public void delete(Advertisement advertisement, User user) throws IllegalAccessException {
+    public void delete(Long advertisementId, User user) throws IllegalAccessException {
         UserDTO userDTO = user.clone();
-        userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
+        userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisementId));
         userService.save(user, userDTO);
-        advertisementRepository.delete(advertisement);
+        advertisementRepository.delete(findById(advertisementId));
     }
 }

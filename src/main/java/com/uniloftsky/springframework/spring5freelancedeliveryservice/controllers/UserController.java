@@ -4,43 +4,81 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.AdvertisementService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.NotificationService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
     private final DriverService driverService;
+    private final NotificationService notificationService;
+    private final AdvertisementService advertisementService;
 
-    public UserController(UserService userService, DriverService driverService) {
+    public UserController(UserService userService, DriverService driverService, NotificationService notificationService, AdvertisementService advertisementService) {
         this.userService = userService;
         this.driverService = driverService;
+        this.notificationService = notificationService;
+        this.advertisementService = advertisementService;
     }
 
-    @GetMapping("/user")
+    @GetMapping
     public User getUser(Authentication authentication) {
         return userService.findById(authentication.getName());
     }
 
-    @GetMapping("/user/notifications")
+
+    //Notifications block
+
+    @GetMapping("/notifications")
     public Set<Notification> getUserNotifications(Authentication authentication) {
         return userService.findById(authentication.getName()).getUser_metadata().getNotifications();
     }
 
-    @GetMapping("/user/advertisements")
+    @GetMapping(value = "/notifications/{id}")
+    public Notification getUserNotification(@PathVariable("id") Long id, Authentication authentication) {
+        return notificationService.findUserNotification(id, authentication.getName());
+    }
+
+    @DeleteMapping("/notifications/{id}")
+    public ResponseEntity<String> deleteUserNotification(@PathVariable("id") Long id, Authentication authentication) throws IllegalAccessException {
+        notificationService.delete(id, userService.findById(authentication.getName()));
+        return new ResponseEntity<>("Notification deleted", new HttpHeaders(), HttpStatus.OK);
+    }
+
+    //End of notifications block
+
+    //Advertisements block
+
+    @GetMapping("/advertisements")
     public Set<Advertisement> getUserAdvertisements(Authentication authentication) {
         return userService.findById(authentication.getName()).getUser_metadata().getAdvertisements();
     }
 
-    @GetMapping("/user/driver")
+    @GetMapping("/advertisements/{id}")
+    public Advertisement getUserAdvertisement(@PathVariable("id") Long id, Authentication authentication) {
+        return advertisementService.findUserAdvertisement(id, authentication.getName());
+    }
+
+    @DeleteMapping("/advertisements/{id}")
+    public ResponseEntity<String> deleteUserAdvertisement(@PathVariable("id") Long id, Authentication authentication) throws IllegalAccessException {
+        advertisementService.delete(id, userService.findById(authentication.getName()));
+        return new ResponseEntity<>("Advertisement deleted", new HttpHeaders(), HttpStatus.OK);
+    }
+
+    //End of advertisements block
+
+    @GetMapping("/driver")
     public DriverDTO getUserDriver(Authentication authentication) {
         if (userService.findById(authentication.getName()).getUser_metadata().isDriver()) {
             return driverService.findByUserId(authentication.getName());

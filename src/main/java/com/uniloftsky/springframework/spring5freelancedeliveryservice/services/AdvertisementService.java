@@ -9,14 +9,16 @@ public interface AdvertisementService {
 
     Advertisement findById(Long id);
 
+    Advertisement findUserAdvertisement(Long id, String userId);
+
     Set<Advertisement> findAll();
 
     Advertisement save(Advertisement advertisement);
 
     Advertisement save(Advertisement advertisement, User user) throws IllegalAccessException;
 
-    void delete(Advertisement advertisement);
+    void delete(Long advertisementId);
 
-    void delete(Advertisement advertisement, User user) throws IllegalAccessException;
+    void delete(Long advertisementId, User user) throws IllegalAccessException;
 
 }
