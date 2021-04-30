@@ -1,11 +1,16 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -14,10 +19,16 @@ import java.util.Set;
 public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementRepository advertisementRepository;
+    private final AdvertisementMapper advertisementMapper;
+    private final TypeService typeService;
+    private final TypeMapper typeMapper;
     private final UserService userService;
 
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, UserService userService) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, TypeService typeService, TypeMapper typeMapper, UserService userService) {
         this.advertisementRepository = advertisementRepository;
+        this.advertisementMapper = advertisementMapper;
+        this.typeService = typeService;
+        this.typeMapper = typeMapper;
         this.userService = userService;
     }
 
@@ -51,12 +62,42 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public Advertisement save(Advertisement advertisement, User user) {
+        Set<Type> types = new HashSet<>();
+        for (Type type : advertisement.getTypes()) {
+            types.add(typeMapper.typeDTOToType(typeService.findById(type.getId())));
+        }
+        advertisement.getTypes().clear();
+        advertisement.getTypes().addAll(types);
         advertisementRepository.save(advertisement);
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
         userDTO.getUserMetadata().getAdvertisements().add(advertisement);
         userService.save(user, userDTO);
         return advertisement;
+    }
+
+    @Override
+    public Advertisement patch(AdvertisementDTO advertisementDTO, User user, Long id) {
+        Advertisement patchedAdvertisement = findById(id);
+        Field[] advertisementFields = advertisementDTO.getClass().getDeclaredFields();
+        for (Field field : advertisementFields) {
+            field.setAccessible(true);
+            try {
+                if (field.get(advertisementDTO) != null) {
+                    field.set(patchedAdvertisement, field.get(advertisementDTO));
+                }
+            } catch (IllegalAccessException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        if (advertisementDTO.getTitle() != null) {
+            patchedAdvertisement.setTitle(advertisementDTO.getTitle());
+        }
+
+        System.out.println();
+
+
+        return null;
     }
 
     @Override

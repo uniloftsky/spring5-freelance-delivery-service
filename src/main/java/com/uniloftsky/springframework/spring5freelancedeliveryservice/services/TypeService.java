@@ -6,8 +6,8 @@ import java.util.Set;
 
 public interface TypeService {
 
-    Set<TypeDTO> getAll();
-    TypeDTO getById(Long id);
+    Set<TypeDTO> findAll();
+    TypeDTO findById(Long id);
     TypeDTO save(TypeDTO typeDTO);
     TypeDTO create(TypeDTO typeDTO);
     void delete(Long id);

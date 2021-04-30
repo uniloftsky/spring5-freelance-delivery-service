@@ -20,13 +20,13 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public Set<TypeDTO> getAll() {
+    public Set<TypeDTO> findAll() {
         return typeRepository.findAll().stream().map(typeMapper::typeToTypeDTO).collect(Collectors.toSet());
     }
 
     @Override
-    public TypeDTO getById(Long id) {
-        return null;
+    public TypeDTO findById(Long id) {
+        return typeRepository.findById(id).map(typeMapper::typeToTypeDTO).orElseThrow(RuntimeException::new);
     }
 
     @Override

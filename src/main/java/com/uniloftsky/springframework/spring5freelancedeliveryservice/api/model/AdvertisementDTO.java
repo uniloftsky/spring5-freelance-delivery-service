@@ -1,11 +1,14 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.model;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Details;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,23 +17,14 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Advertisement extends BaseEntity {
+public class AdvertisementDTO {
 
     private String title;
-
-    @ManyToMany
     private Set<Type> types = new HashSet<>();
-
     private String deliverFrom;
     private String deliverTo;
-
-    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.ALL)
     private Details details;
-
-    @ManyToOne
     private Driver executor;
-
     private Integer price;
     private LocalDate date;
     private Integer period;

@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 
@@ -16,6 +17,8 @@ public interface AdvertisementService {
     Advertisement save(Advertisement advertisement);
 
     Advertisement save(Advertisement advertisement, User user);
+
+    Advertisement patch(AdvertisementDTO advertisement, User user, Long id);
 
     void delete(Long advertisementId);
 

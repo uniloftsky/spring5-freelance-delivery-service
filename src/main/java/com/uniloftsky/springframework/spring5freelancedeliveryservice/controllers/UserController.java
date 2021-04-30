@@ -1,6 +1,8 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
@@ -37,6 +39,10 @@ public class UserController {
         return userService.findById(authentication.getName());
     }
 
+    @PatchMapping
+    public User patchUser(@RequestBody UserDTO userDTO, Authentication authentication) {
+        return userService.save(userService.findById(authentication.getName()), userDTO);
+    }
 
     //Notifications block
 
@@ -79,6 +85,11 @@ public class UserController {
     @PostMapping("/advertisements")
     public Advertisement createUserAdvertisement(@RequestBody Advertisement advertisement, Authentication authentication) {
         return advertisementService.save(advertisement, userService.findById(authentication.getName()));
+    }
+
+    @PatchMapping("/advertisements/{id}")
+    public Advertisement patchUserAdvertisement(@PathVariable("id") Long id, @RequestBody AdvertisementDTO advertisement, Authentication authentication) {
+        return advertisementService.patch(advertisement, userService.findById(authentication.getName()), id);
     }
 
     //End of advertisements block
