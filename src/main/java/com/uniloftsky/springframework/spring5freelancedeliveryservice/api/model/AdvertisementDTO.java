@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -19,8 +18,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class AdvertisementDTO {
 
+    private Long id;
     private String title;
-    private Set<Type> types = new HashSet<>();
+    private Set<Type> types;
     private String deliverFrom;
     private String deliverTo;
     private Details details;

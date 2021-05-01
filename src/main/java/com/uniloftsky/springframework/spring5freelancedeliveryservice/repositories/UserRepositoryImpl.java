@@ -2,6 +2,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.repositor
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.FieldsHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -10,7 +11,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,17 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user, UserDTO userDTO) {
         UserDTO patchUser = user.clone();
-        Field[] userFields = patchUser.getClass().getDeclaredFields();
-        for (Field field : userFields) {
-            field.setAccessible(true);
-            try {
-                if (field.get(userDTO) != null) {
-                    field.set(patchUser, field.get(userDTO));
-                }
-            } catch (IllegalAccessException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        FieldsHandler.handleFields(userDTO, patchUser);
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("authorization", "Bearer " + token);
         String getUsersUri = managementApi + "users/";

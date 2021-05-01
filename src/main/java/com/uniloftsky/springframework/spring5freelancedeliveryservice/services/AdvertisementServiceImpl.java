@@ -8,9 +8,9 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Adve
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.FieldsHandler;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -79,25 +79,11 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     public Advertisement patch(AdvertisementDTO advertisementDTO, User user, Long id) {
         Advertisement patchedAdvertisement = findById(id);
-        Field[] advertisementFields = advertisementDTO.getClass().getDeclaredFields();
-        for (Field field : advertisementFields) {
-            field.setAccessible(true);
-            try {
-                if (field.get(advertisementDTO) != null) {
-                    field.set(patchedAdvertisement, field.get(advertisementDTO));
-                }
-            } catch (IllegalAccessException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        if (advertisementDTO.getTitle() != null) {
-            patchedAdvertisement.setTitle(advertisementDTO.getTitle());
-        }
-
-        System.out.println();
-
-
-        return null;
+        AdvertisementDTO patchedAdvertisementDTO = advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
+        FieldsHandler.handleFields(advertisementDTO, patchedAdvertisementDTO);
+        patchedAdvertisement = advertisementMapper.advertisementDTOToAdvertisement(patchedAdvertisementDTO);
+        save(patchedAdvertisement, user);
+        return patchedAdvertisement;
     }
 
     @Override
