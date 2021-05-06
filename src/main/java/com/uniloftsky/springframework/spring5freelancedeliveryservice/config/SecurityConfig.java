@@ -28,12 +28,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                /*.mvcMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                .mvcMatchers(HttpMethod.PATCH, "/api/v1/**").permitAll()
-                .mvcMatchers(HttpMethod.DELETE, "/api/v1/**").permitAll()*/
-                .mvcMatchers("/h2-console/**").permitAll()
-//                .mvcMatchers(HttpMethod.GET, "/api").permitAll()
-                .mvcMatchers("/api/v1/admin/**").permitAll()
+                .mvcMatchers("/h2-console/**",
+                        "/api/v1/admin/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/api").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors()
