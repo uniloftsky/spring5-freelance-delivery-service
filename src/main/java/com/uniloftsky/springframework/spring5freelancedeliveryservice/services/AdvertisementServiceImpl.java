@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AdvertisementServiceImpl implements AdvertisementService {
@@ -66,6 +67,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         for (Type type : advertisement.getTypes()) {
             types.add(typeMapper.typeDTOToType(typeService.findById(type.getId())));
         }
+        advertisement.setUserId(user.getUser_id());
         advertisement.getTypes().clear();
         advertisement.getTypes().addAll(types);
         advertisementRepository.save(advertisement);
@@ -97,5 +99,18 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisementId));
         userService.save(user, userDTO);
         advertisementRepository.delete(findById(advertisementId));
+    }
+
+    @Override
+    public void refreshAdvertisementsType(Type type) {
+        Set<Advertisement> advertisements = findAll().stream().filter(ad -> {
+            long count = ad.getTypes().stream().filter(t -> t.getId().equals(type.getId())).count();
+            return count > 0;
+        }).collect(Collectors.toSet());
+        for (Advertisement advertisement : advertisements) {
+            save(advertisement, userService.findById(advertisement.getUserId()));
+        }
+
+
     }
 }

@@ -40,4 +40,10 @@ public class TypeController {
     public TypeDTO createType(@RequestBody TypeDTO typeDTO) {
         return typeService.save(typeDTO);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/admin/types/{id}")
+    public TypeDTO patchType(@RequestBody TypeDTO typeDTO, @PathVariable("id") Long id) {
+        return typeService.patch(typeDTO, id);
+    }
 }

@@ -36,5 +36,6 @@ public class Advertisement extends BaseEntity {
     private Integer period;
     private String description;
     private Status status = Status.ACTIVE;
+    private String userId;
 
 }
