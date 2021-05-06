@@ -4,15 +4,11 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.TypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@RequestMapping(path = "/api/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 public class TypeController {
 
@@ -22,7 +18,7 @@ public class TypeController {
         this.typeService = typeService;
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    /*@ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/types", produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<TypeDTO> getTypes() {
         return typeService.findAll();
@@ -31,5 +27,17 @@ public class TypeController {
     @GetMapping("/private/types")
     public String getMessage(Authentication authentication) {
         return "All good. You can see this because you are Authenticated.";
+    }*/
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/admin/types")
+    public Set<TypeDTO> getTypes() {
+        return typeService.findAll();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/admin/types")
+    public TypeDTO createType(@RequestBody TypeDTO typeDTO) {
+        return typeService.save(typeDTO);
     }
 }

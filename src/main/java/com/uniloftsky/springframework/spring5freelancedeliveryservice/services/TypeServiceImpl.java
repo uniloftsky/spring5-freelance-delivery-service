@@ -2,6 +2,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.TypeDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,8 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public TypeDTO save(TypeDTO typeDTO) {
-        return null;
+        Type savedType = typeMapper.typeDTOToType(typeDTO);
+        return typeMapper.typeToTypeDTO(typeRepository.save(savedType));
     }
 
     @Override

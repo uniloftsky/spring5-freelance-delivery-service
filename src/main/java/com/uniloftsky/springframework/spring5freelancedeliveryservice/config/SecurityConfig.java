@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.DELETE, "/api/v1/**").permitAll()*/
                 .mvcMatchers("/h2-console/**").permitAll()
 //                .mvcMatchers(HttpMethod.GET, "/api").permitAll()
+                .mvcMatchers("/api/v1/admin/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors()
