@@ -63,19 +63,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public Advertisement save(Advertisement advertisement, User user) {
-        Set<Type> types = new HashSet<>();
-        for (Type type : advertisement.getTypes()) {
-            types.add(typeMapper.typeDTOToType(typeService.findById(type.getId())));
-        }
-        advertisement.setUserId(user.getUser_id());
-        advertisement.getTypes().clear();
-        advertisement.getTypes().addAll(types);
-        advertisementRepository.save(advertisement);
+        Advertisement savedAdvertisement = handleAdvertisement(advertisement, user);
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
-        userDTO.getUserMetadata().getAdvertisements().add(advertisement);
+        userDTO.getUserMetadata().getAdvertisements().add(savedAdvertisement);
         userService.save(user, userDTO);
-        return advertisement;
+        return savedAdvertisement;
     }
 
     @Override
@@ -110,7 +103,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         for (Advertisement advertisement : advertisements) {
             save(advertisement, userService.findById(advertisement.getUserId()));
         }
-
-
     }
+
+    private Advertisement handleAdvertisement(Advertisement advertisement, User user) {
+        Set<Type> types = new HashSet<>();
+        for (Type type : advertisement.getTypes()) {
+            types.add(typeMapper.typeDTOToType(typeService.findById(type.getId())));
+        }
+        advertisement.setUserId(user.getUser_id());
+        advertisement.getTypes().clear();
+        advertisement.getTypes().addAll(types);
+        return advertisementRepository.save(advertisement);
+    }
+
 }
