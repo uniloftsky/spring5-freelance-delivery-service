@@ -3,6 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.controlle
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
@@ -99,7 +100,7 @@ public class UserController {
         if (userService.findById(authentication.getName()).getUser_metadata().isDriver()) {
             return driverService.findByUserId(authentication.getName());
         } else {
-            throw new RuntimeException("User is not a driver!");
+            throw new ResourceNotFoundException("Cannot find an expected user-driver. Is given user a driver?");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,12 @@ import org.springframework.web.client.HttpClientErrorException.NotFound;
 public class GlobalController {
 
     @ExceptionHandler(NotFound.class)
-    public ResponseEntity<Object> handleNotFound(Exception exception) {
+    public ResponseEntity<Object> handleAuth0NotFound(Exception exception) {
+        return new ResponseEntity<>("Resource not found.\nMessage: " + exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Object> handleResourceNotFound(Exception exception) {
         return new ResponseEntity<>("Resource not found.\nMessage: " + exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 

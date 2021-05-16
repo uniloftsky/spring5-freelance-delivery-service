@@ -4,6 +4,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mapper
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
@@ -35,7 +36,11 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public Advertisement findById(Long id) {
-        return advertisementRepository.findById(id).orElseThrow(RuntimeException::new);
+        Optional<Advertisement> advertisementOptional = advertisementRepository.findById(id);
+        if (advertisementOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Advertisement with ID: " + id + " not found!");
+        }
+        return advertisementOptional.get();
     }
 
     @Override
@@ -43,7 +48,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         Optional<Advertisement> advertisementOptional = userService.findById(userId).getUser_metadata().getAdvertisements()
                 .stream().filter(e -> e.getId().equals((id))).findFirst();
         if (advertisementOptional.isEmpty()) {
-            throw new RuntimeException("User has not expected advertisement!");
+            throw new ResourceNotFoundException("User has not expected advertisement with ID: " + id);
         } else {
             return advertisementOptional.get();
         }
