@@ -14,9 +14,9 @@ public interface DriverService {
 
     Set<DriverDTO> findAll();
 
-    DriverDTO save(DriverDTO driverDTO);
+    DriverDTO save(Driver driver);
 
-    Driver save(Driver driver, User user);
+    DriverDTO save(Driver driver, User user);
 
     void delete(Long driverId);
 

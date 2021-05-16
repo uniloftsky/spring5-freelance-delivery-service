@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,11 @@ public class GlobalController {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFound(Exception exception) {
         return new ResponseEntity<>("Resource not found.\nMessage: " + exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(Exception exception) {
+        return new ResponseEntity<>("Bad request.\nMessage: " + exception.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
 }

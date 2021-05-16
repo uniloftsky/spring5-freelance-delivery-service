@@ -3,6 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
@@ -46,18 +47,22 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public DriverDTO save(DriverDTO driverDTO) {
-        Driver driver = driverMapper.driverDTOToDriver(driverDTO);
+    public DriverDTO save(Driver driver) {
         return driverMapper.driverToDriverDTO(driverRepository.save(driver));
     }
 
     @Override
-    public Driver save(Driver driver, User user) {
-        save(driverMapper.driverToDriverDTO(driver));
-        UserDTO userDTO = user.clone();
-        userDTO.getUserMetadata().setDriver(true);
-        userService.save(user, userDTO);
-        return driver;
+    public DriverDTO save(Driver driver, User user) {
+        if(user.getUser_metadata().isDriver()) {
+            throw new BadRequestException("Given user is already a driver!");
+        } else {
+            driver.setUserId(user.getUser_id());
+            save(driver);
+            UserDTO userDTO = user.clone();
+            userDTO.getUserMetadata().setDriver(true);
+            userService.save(user, userDTO);
+            return driverMapper.driverToDriverDTO(driver);
+        }
     }
 
     @Override

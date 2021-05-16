@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
@@ -27,12 +28,14 @@ public class UserController {
     private final DriverService driverService;
     private final NotificationService notificationService;
     private final AdvertisementService advertisementService;
+    private final DriverMapper driverMapper;
 
-    public UserController(UserService userService, DriverService driverService, NotificationService notificationService, AdvertisementService advertisementService) {
+    public UserController(UserService userService, DriverService driverService, NotificationService notificationService, AdvertisementService advertisementService, DriverMapper driverMapper) {
         this.userService = userService;
         this.driverService = driverService;
         this.notificationService = notificationService;
         this.advertisementService = advertisementService;
+        this.driverMapper = driverMapper;
     }
 
     @GetMapping
@@ -102,6 +105,11 @@ public class UserController {
         } else {
             throw new ResourceNotFoundException("Cannot find an expected user-driver. Is given user a driver?");
         }
+    }
+
+    @PostMapping("/driver")
+    public DriverDTO createUserDriver(@RequestBody DriverDTO driverDTO, Authentication authentication) {
+        return driverService.save(driverMapper.driverDTOToDriver(driverDTO), userService.findById(authentication.getName()));
     }
 
 /*    @GetMapping("/users/{id}")
