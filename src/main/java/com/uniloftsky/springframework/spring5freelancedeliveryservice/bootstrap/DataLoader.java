@@ -2,9 +2,11 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.bootstrap
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.NotificationMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.UserMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.UserMetadata;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.NotificationRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.UserRepository;
@@ -43,6 +45,15 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+
+        UserDTO userDTO = new UserDTO();
+        UserMetadata userMetadata = new UserMetadata();
+        userMetadata.setDriver(null);
+        userMetadata.setAdvertisements(null);
+        userMetadata.setNotifications(null);
+        userDTO.setUserMetadata(userMetadata);
+        userRepository.save(userRepository.findById("auth0|607d94db1c9629006daa7adf"), userDTO);
+
         Set<Type> types = new HashSet<>();
         types.add(new Type("Таксі"));
         types.add(new Type("Короткі відстані"));

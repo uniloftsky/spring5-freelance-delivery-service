@@ -4,11 +4,14 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mapper
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.FieldsHandler;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,15 +30,11 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverDTO findById(Long id) {
-        return driverRepository.findById(id)
-                .map(driverMapper::driverToDriverDTO)
-                .orElseThrow(RuntimeException::new);
-    }
-
-    @Override
-    public DriverDTO findByUserId(String id) {
-        Driver driver = driverRepository.findByUserId(id);
-        return driverMapper.driverToDriverDTO(driver);
+        Optional<Driver> driverOptional = driverRepository.findById(id);
+        if (driverOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Cannot find driver with ID: " + id);
+        }
+        return driverMapper.driverToDriverDTO(driverOptional.get());
     }
 
     @Override
@@ -53,16 +52,24 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public DriverDTO save(Driver driver, User user) {
-        if(user.getUser_metadata().isDriver()) {
+        Optional<Driver> driverOptional = Optional.ofNullable(user.getUser_metadata().getDriver());
+        if (driverOptional.isPresent() && driver.getId() == null) {
             throw new BadRequestException("Given user is already a driver!");
         } else {
             driver.setUserId(user.getUser_id());
             save(driver);
             UserDTO userDTO = user.clone();
-            userDTO.getUserMetadata().setDriver(true);
+            userDTO.getUserMetadata().setDriver(driver);
             userService.save(user, userDTO);
             return driverMapper.driverToDriverDTO(driver);
         }
+    }
+
+    @Override
+    public DriverDTO patch(DriverDTO driverDTO, User user) {
+        DriverDTO patchedDriver = driverMapper.driverToDriverDTO(getUserDriver(user));
+        FieldsHandler.handleFields(driverDTO, patchedDriver);
+        return save(driverMapper.driverDTOToDriver(patchedDriver), user);
     }
 
     @Override
@@ -74,7 +81,17 @@ public class DriverServiceImpl implements DriverService {
     public void delete(Long driverId, User user) {
         driverRepository.delete(driverMapper.driverDTOToDriver(findById(driverId)));
         UserDTO userDTO = user.clone();
-        userDTO.getUserMetadata().setDriver(false);
+        userDTO.getUserMetadata().setDriver(null);
         userService.save(user, userDTO);
+    }
+
+    @Override
+    public Driver getUserDriver(User user) {
+        Optional<Driver> driverOptional = Optional.ofNullable(user.getUser_metadata().getDriver());
+        if (driverOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Cannot find an expected user-driver. Is given user a driver?");
+        } else {
+            return driverOptional.get();
+        }
     }
 }

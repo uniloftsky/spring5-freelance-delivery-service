@@ -10,16 +10,18 @@ public interface DriverService {
 
     DriverDTO findById(Long id);
 
-    DriverDTO findByUserId(String id);
-
     Set<DriverDTO> findAll();
 
     DriverDTO save(Driver driver);
 
     DriverDTO save(Driver driver, User user);
 
+    DriverDTO patch(DriverDTO driverDTO, User user);
+
     void delete(Long driverId);
 
     void delete(Long driverId, User user);
+
+    Driver getUserDriver(User user);
 
 }

@@ -4,7 +4,6 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mapper
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
@@ -100,17 +99,21 @@ public class UserController {
 
     @GetMapping("/driver")
     public DriverDTO getUserDriver(Authentication authentication) {
-        if (userService.findById(authentication.getName()).getUser_metadata().isDriver()) {
-            return driverService.findByUserId(authentication.getName());
-        } else {
-            throw new ResourceNotFoundException("Cannot find an expected user-driver. Is given user a driver?");
-        }
+        return driverMapper.driverToDriverDTO(driverService.getUserDriver(userService.findById(authentication.getName())));
     }
 
     @PostMapping("/driver")
     public DriverDTO createUserDriver(@RequestBody DriverDTO driverDTO, Authentication authentication) {
         return driverService.save(driverMapper.driverDTOToDriver(driverDTO), userService.findById(authentication.getName()));
     }
+
+    @PatchMapping("/driver")
+    public DriverDTO patchUserDriver(@RequestBody DriverDTO driverDTO, Authentication authentication) {
+        return driverService.patch(driverDTO, userService.findById(authentication.getName()));
+    }
+
+
+
 
 /*    @GetMapping("/users/{id}")
     public User getUserById(@PathVariable("id") String id, HttpServletResponse response) {
