@@ -1,16 +1,19 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.FieldsHandler;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,11 +23,15 @@ public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
+    private final TypeMapper typeMapper;
+    private final TypeService typeService;
     private final UserService userService;
 
-    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, UserService userService) {
+    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, TypeMapper typeMapper, TypeService typeService, UserService userService) {
         this.driverRepository = driverRepository;
         this.driverMapper = driverMapper;
+        this.typeMapper = typeMapper;
+        this.typeService = typeService;
         this.userService = userService;
     }
 
@@ -56,8 +63,7 @@ public class DriverServiceImpl implements DriverService {
         if (driverOptional.isPresent() && driver.getId() == null) {
             throw new BadRequestException("Given user is already a driver!");
         } else {
-            driver.setUserId(user.getUser_id());
-            save(driver);
+            driver = handleDriver(driver, user);
             UserDTO userDTO = user.clone();
             userDTO.getUserMetadata().setDriver(driver);
             userService.save(user, userDTO);
@@ -93,5 +99,16 @@ public class DriverServiceImpl implements DriverService {
         } else {
             return driverOptional.get();
         }
+    }
+
+    private Driver handleDriver(Driver driver, User user) {
+        Set<Type> types = new HashSet<>();
+        for (Type type : driver.getTypes()) {
+            types.add(typeMapper.typeDTOToType(typeService.findById(type.getId())));
+        }
+        driver.setUserId(user.getUser_id());
+        driver.getTypes().clear();
+        driver.getTypes().addAll(types);
+        return driverRepository.save(driver);
     }
 }

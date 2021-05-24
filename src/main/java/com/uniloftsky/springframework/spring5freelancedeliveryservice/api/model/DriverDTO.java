@@ -12,11 +12,11 @@ import java.util.Set;
 public class DriverDTO {
 
     private Long id;
-    private String car;
     private Integer experience;
     private String description;
+    private String name;
     private Set<TypeDTO> types = new HashSet<>();
     private Set<Advertisement> advertisements = new HashSet<>();
-    private String user_id;
+    private String userId;
 
 }

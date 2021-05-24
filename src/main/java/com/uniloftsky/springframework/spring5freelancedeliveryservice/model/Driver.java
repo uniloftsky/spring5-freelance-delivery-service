@@ -18,9 +18,9 @@ import java.util.Set;
 @Entity
 public class Driver extends BaseEntity {
 
-    private String car;
     private Integer experience;
     private String description;
+    private String name;
 
     @OneToMany
     private Set<Type> types = new HashSet<>();
