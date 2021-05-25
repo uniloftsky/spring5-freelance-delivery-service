@@ -1,6 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +16,9 @@ public class DriverDTO {
     private String description;
     private String name;
     private Set<TypeDTO> types = new HashSet<>();
-    private Set<Advertisement> advertisements = new HashSet<>();
-    private String user_id;
+    private Set<AdvertisementDTO> advertisements = new HashSet<>();
+
+    @JsonProperty("user_id")
+    private String userId;
 
 }

@@ -25,7 +25,7 @@ public class Driver extends BaseEntity {
     @OneToMany
     private Set<Type> types = new HashSet<>();
 
-    @OneToMany(mappedBy = "executor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "executor", cascade = CascadeType.MERGE)
     private Set<Advertisement> advertisements = new HashSet<>();
 
     private String userId;

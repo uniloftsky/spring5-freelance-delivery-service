@@ -55,13 +55,12 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver save(Driver driver, User user) {
-        Optional<Driver> driverOptional = Optional.ofNullable(user.getUser_metadata().getDriver());
-        if (driverOptional.isPresent() && driver.getId() == null) {
+        if (user.getUser_metadata().getDriver() != null && driver.getId() == null) {
             throw new BadRequestException("Given user is already a driver!");
         } else {
             driver = handleDriver(driver, user);
             UserDTO userDTO = user.clone();
-            userDTO.getUserMetadata().setDriver(driver);
+            userDTO.getUserMetadata().setDriver(driverMapper.driverToDriverDTO(driver));
             userService.save(user, userDTO);
             return driver;
         }
@@ -89,7 +88,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver getUserDriver(User user) {
-        Optional<Driver> driverOptional = Optional.ofNullable(user.getUser_metadata().getDriver());
+        Optional<Driver> driverOptional = Optional.ofNullable(findById(user.getUser_metadata().getDriver().getId()));
         if (driverOptional.isEmpty()) {
             throw new ResourceNotFoundException("Cannot find an expected user-driver. Is given user a driver?");
         } else {

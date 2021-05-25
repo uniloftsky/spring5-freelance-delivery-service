@@ -8,6 +8,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
@@ -129,7 +130,9 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         Advertisement advertisement = findUserAdvertisement(advertisementId, userId);
         Driver driver = driverService.findById(driverId);
         advertisement.setExecutor(driver);
+        advertisement.setStatus(Status.APPOINTED);
         driver.getAdvertisements().add(advertisement);
+        driverService.save(driver, userService.findById(userId));
         save(advertisement, userService.findById(userId));
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }

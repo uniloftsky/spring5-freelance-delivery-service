@@ -17,8 +17,8 @@ public class UserDTO {
         this.name = user.getName();
         this.email = user.getEmail();
         this.nickname = user.getNickname();
-        this.family_name = user.getFamily_name();
-        this.given_name = user.getGiven_name();
+        this.familyName = user.getFamily_name();
+        this.givenName = user.getGiven_name();
         this.picture = user.getPicture();
         if (user.getUser_metadata() == null) {
             this.userMetadata = new UserMetadata();
@@ -28,7 +28,9 @@ public class UserDTO {
     }
 
     private String email;
-    private boolean email_verified;
+
+    @JsonProperty("email_verified")
+    private boolean emailVerified;
 
     @JsonProperty("user_metadata")
     private UserMetadata userMetadata;
@@ -36,7 +38,11 @@ public class UserDTO {
     private String name;
     private String nickname;
     private String picture;
-    private String family_name;
-    private String given_name;
+
+    @JsonProperty("family_name")
+    private String familyName;
+
+    @JsonProperty("given_name")
+    private String givenName;
 
 }

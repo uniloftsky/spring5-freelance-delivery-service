@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class UserMetadata {
 
     private Set<Notification> notifications = new HashSet<>();
     private Set<AdvertisementDTO> advertisements = new HashSet<>();
-    private Driver driver;
+    private DriverDTO driver;
 
 
 }

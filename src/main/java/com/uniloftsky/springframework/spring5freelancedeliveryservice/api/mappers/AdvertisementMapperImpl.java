@@ -23,8 +23,8 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             return null;
         } else {
             AdvertisementDTO advertisementDTO = new AdvertisementDTO();
-            advertisementDTO.setDeliver_from(advertisement.getDeliverFrom());
-            advertisementDTO.setDeliver_to(advertisement.getDeliverTo());
+            advertisementDTO.setDeliverFrom(advertisement.getDeliverFrom());
+            advertisementDTO.setDeliverTo(advertisement.getDeliverTo());
             if (advertisement.getExecutor() != null) {
                 advertisementDTO.setDriverId(advertisement.getExecutor().getId());
             }
@@ -53,8 +53,8 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             if (advertisementDTO.getDriverId() != null) {
                 advertisement.setExecutor(driverService.findById(advertisementDTO.getDriverId()));
             }
-            advertisement.setDeliverFrom(advertisementDTO.getDeliver_from());
-            advertisement.setDeliverTo(advertisementDTO.getDeliver_to());
+            advertisement.setDeliverFrom(advertisementDTO.getDeliverFrom());
+            advertisement.setDeliverTo(advertisementDTO.getDeliverTo());
             advertisement.setId(advertisementDTO.getId());
             advertisement.setTitle(advertisementDTO.getTitle());
             Set<Type> set = advertisementDTO.getTypes();
