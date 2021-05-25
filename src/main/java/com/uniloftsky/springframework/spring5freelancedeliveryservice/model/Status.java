@@ -3,6 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.model;
 public enum Status {
 
     ACTIVE("Активно"),
+    APPOINTED("Назначено"),
     IN_PROCESS("Виконується"),
     READY("Виконано"),
     BLOCKED("Заблоковано");

@@ -26,6 +26,7 @@ public class UserController {
         return userService.save(userService.findById(authentication.getName()), userDTO);
     }
 
+
 /*    @GetMapping("/users/{id}")
     public User getUserById(@PathVariable("id") String id, HttpServletResponse response) {
         return userService.findById(id);

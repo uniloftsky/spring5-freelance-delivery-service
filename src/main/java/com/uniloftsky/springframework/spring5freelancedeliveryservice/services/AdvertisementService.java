@@ -17,14 +17,16 @@ public interface AdvertisementService {
 
     Advertisement save(Advertisement advertisement);
 
-    Advertisement save(Advertisement advertisement, User user);
+    AdvertisementDTO save(Advertisement advertisement, User user);
 
-    Advertisement patch(AdvertisementDTO advertisement, User user, Long id);
+    AdvertisementDTO patch(AdvertisementDTO advertisement, User user, Long id);
 
     void delete(Long advertisementId);
 
     void delete(Long advertisementId, User user);
 
     void refreshAdvertisementsType(Type type);
+
+    AdvertisementDTO appointDriverToAdvertisement(Long advertisementId, Long driverId, String userId);
 
 }

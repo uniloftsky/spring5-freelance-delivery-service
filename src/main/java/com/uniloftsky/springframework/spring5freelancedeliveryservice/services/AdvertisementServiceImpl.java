@@ -1,11 +1,13 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
@@ -21,17 +23,21 @@ import java.util.stream.Collectors;
 public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementRepository advertisementRepository;
-    private final AdvertisementMapper advertisementMapper;
     private final TypeService typeService;
-    private final TypeMapper typeMapper;
     private final UserService userService;
+    private final DriverService driverService;
+    private final AdvertisementMapper advertisementMapper;
+    private final DriverMapper driverMapper;
+    private final TypeMapper typeMapper;
 
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, TypeService typeService, TypeMapper typeMapper, UserService userService) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, DriverMapper driverMapper, TypeService typeService, TypeMapper typeMapper, UserService userService, DriverService driverService) {
         this.advertisementRepository = advertisementRepository;
         this.advertisementMapper = advertisementMapper;
+        this.driverMapper = driverMapper;
         this.typeService = typeService;
         this.typeMapper = typeMapper;
         this.userService = userService;
+        this.driverService = driverService;
     }
 
     @Override
@@ -45,12 +51,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public Advertisement findUserAdvertisement(Long id, String userId) {
-        Optional<Advertisement> advertisementOptional = userService.findById(userId).getUser_metadata().getAdvertisements()
+        Optional<AdvertisementDTO> advertisementDTOOptional = userService.findById(userId).getUser_metadata().getAdvertisements()
                 .stream().filter(e -> e.getId().equals((id))).findFirst();
-        if (advertisementOptional.isEmpty()) {
+        if (advertisementDTOOptional.isEmpty()) {
             throw new ResourceNotFoundException("User has not expected advertisement with ID: " + id);
         } else {
-            return advertisementOptional.get();
+            AdvertisementDTO foundAdvertisementDTO = advertisementDTOOptional.get();
+            Advertisement advertisement = advertisementMapper.advertisementDTOToAdvertisement(foundAdvertisementDTO);
+            if (foundAdvertisementDTO.getDriverId() != null) {
+                advertisement.setExecutor(driverService.findById(foundAdvertisementDTO.getDriverId()));
+            }
+            return advertisement;
         }
     }
 
@@ -67,23 +78,26 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public Advertisement save(Advertisement advertisement, User user) {
+    public AdvertisementDTO save(Advertisement advertisement, User user) {
         Advertisement savedAdvertisement = handleAdvertisement(advertisement, user);
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
-        userDTO.getUserMetadata().getAdvertisements().add(savedAdvertisement);
+        userDTO.getUserMetadata().getAdvertisements().add(advertisementMapper.advertisementToAdvertisementDTO(savedAdvertisement));
         userService.save(user, userDTO);
-        return savedAdvertisement;
+        return advertisementMapper.advertisementToAdvertisementDTO(savedAdvertisement);
     }
 
     @Override
-    public Advertisement patch(AdvertisementDTO advertisementDTO, User user, Long id) {
+    public AdvertisementDTO patch(AdvertisementDTO advertisementDTO, User user, Long id) {
         Advertisement patchedAdvertisement = findById(id);
         AdvertisementDTO patchedAdvertisementDTO = advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
         FieldsHandler.handleFields(advertisementDTO, patchedAdvertisementDTO);
         patchedAdvertisement = advertisementMapper.advertisementDTOToAdvertisement(patchedAdvertisementDTO);
+        if (patchedAdvertisementDTO.getDriverId() != null) {
+            patchedAdvertisement.setExecutor(driverService.findById(patchedAdvertisementDTO.getDriverId()));
+        }
         save(patchedAdvertisement, user);
-        return patchedAdvertisement;
+        return advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
     }
 
     @Override
@@ -108,6 +122,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         for (Advertisement advertisement : advertisements) {
             save(advertisement, userService.findById(advertisement.getUserId()));
         }
+    }
+
+    @Override
+    public AdvertisementDTO appointDriverToAdvertisement(Long advertisementId, Long driverId, String userId) {
+        Advertisement advertisement = findUserAdvertisement(advertisementId, userId);
+        Driver driver = driverService.findById(driverId);
+        advertisement.setExecutor(driver);
+        driver.getAdvertisements().add(advertisement);
+        save(advertisement, userService.findById(userId));
+        return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
     private Advertisement handleAdvertisement(Advertisement advertisement, User user) {

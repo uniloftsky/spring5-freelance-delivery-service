@@ -8,13 +8,13 @@ import java.util.Set;
 
 public interface DriverService {
 
-    DriverDTO findById(Long id);
+    Driver findById(Long id);
 
-    Set<DriverDTO> findAll();
+    Set<Driver> findAll();
 
-    DriverDTO save(Driver driver);
+    Driver save(Driver driver);
 
-    DriverDTO save(Driver driver, User user);
+    Driver save(Driver driver, User user);
 
     DriverDTO patch(DriverDTO driverDTO, User user);
 

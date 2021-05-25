@@ -28,7 +28,7 @@ public class DriverController {
 
     @PostMapping
     public DriverDTO createUserDriver(@RequestBody DriverDTO driverDTO, Authentication authentication) {
-        return driverService.save(driverMapper.driverDTOToDriver(driverDTO), userService.findById(authentication.getName()));
+        return driverMapper.driverToDriverDTO(driverService.save(driverMapper.driverDTOToDriver(driverDTO), userService.findById(authentication.getName())));
     }
 
     @PatchMapping

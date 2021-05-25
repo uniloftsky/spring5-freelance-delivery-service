@@ -1,7 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Details;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import lombok.AllArgsConstructor;
@@ -21,10 +20,10 @@ public class AdvertisementDTO {
     private Long id;
     private String title;
     private Set<Type> types;
-    private String deliverFrom;
-    private String deliverTo;
+    private String deliver_from;
+    private String deliver_to;
     private Details details;
-    private Driver executor;
+    private Long driverId;
     private Integer price;
     private LocalDate date;
     private Integer period;

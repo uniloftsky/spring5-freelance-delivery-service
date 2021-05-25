@@ -3,6 +3,8 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.bootstrap
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.NotificationMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.UserMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.UserMetadata;
@@ -62,21 +64,21 @@ public class DataLoader implements CommandLineRunner {
 
         Notification notification1 = new Notification(LocalDate.now(), "Notification1", "Notification message", "auth0|607d94db1c9629006daa7adf");
         notificationService.save(notification1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
-/*        Driver driver = new Driver();
+        Driver driver = new Driver();
         driver.setDescription("I'm driver");
         driver.setExperience(10);
         driver.setTypes(types);
         driver.setUserId("auth0|607d94db1c9629006daa7adf");
-        driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));*/
+        driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
-/*        Advertisement advertisement1 = new Advertisement();
+        Advertisement advertisement1 = new Advertisement();
         advertisement1.setDate(LocalDate.now());
         advertisement1.setDeliverFrom("Point1");
         advertisement1.setDeliverTo("Point2");
         advertisement1.setDescription("Desc");
         advertisement1.setTitle("Delivery");
         advertisement1.setTypes(types);
-        advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));*/
+        advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
     }
 }
