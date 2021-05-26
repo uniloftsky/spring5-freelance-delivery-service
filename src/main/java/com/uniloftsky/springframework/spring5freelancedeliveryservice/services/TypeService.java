@@ -7,9 +7,9 @@ import java.util.Set;
 
 public interface TypeService {
 
-    Set<TypeDTO> findAll();
+    Set<Type> findAll();
 
-    TypeDTO findById(Long id);
+    Type findById(Long id);
 
     Type save(Type type);
 

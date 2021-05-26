@@ -24,7 +24,8 @@ public class Type extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Type type = (Type) o;
-        return Objects.equals(name, type.name);
+        return Objects.equals(name, type.name) &&
+                Objects.equals(getId(), type.getId());
     }
 
     @Override

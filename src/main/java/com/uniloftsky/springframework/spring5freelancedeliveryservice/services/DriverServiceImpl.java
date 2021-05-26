@@ -88,18 +88,18 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public Driver getUserDriver(User user) {
-        Optional<Driver> driverOptional = Optional.ofNullable(findById(user.getUser_metadata().getDriver().getId()));
+        Optional<DriverDTO> driverOptional = Optional.ofNullable(user.getUser_metadata().getDriver());
         if (driverOptional.isEmpty()) {
             throw new ResourceNotFoundException("Cannot find an expected user-driver. Is given user a driver?");
         } else {
-            return driverOptional.get();
+            return driverMapper.driverDTOToDriver(driverOptional.get());
         }
     }
 
     private Driver handleDriver(Driver driver, User user) {
         Set<Type> types = new HashSet<>();
         for (Type type : driver.getTypes()) {
-            types.add(typeMapper.typeDTOToType(typeService.findById(type.getId())));
+            types.add(typeService.findById(type.getId()));
         }
         driver.setUserId(user.getUser_id());
         driver.getTypes().clear();

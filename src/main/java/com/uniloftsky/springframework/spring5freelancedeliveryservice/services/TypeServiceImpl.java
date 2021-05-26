@@ -8,8 +8,8 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.Fiel
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class TypeServiceImpl implements TypeService {
@@ -26,13 +26,13 @@ public class TypeServiceImpl implements TypeService {
 
 
     @Override
-    public Set<TypeDTO> findAll() {
-        return typeRepository.findAll().stream().map(typeMapper::typeToTypeDTO).collect(Collectors.toSet());
+    public Set<Type> findAll() {
+        return new HashSet<>(typeRepository.findAll());
     }
 
     @Override
-    public TypeDTO findById(Long id) {
-        return typeRepository.findById(id).map(typeMapper::typeToTypeDTO).orElseThrow(RuntimeException::new);
+    public Type findById(Long id) {
+        return typeRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public TypeDTO patch(TypeDTO typeDTO, Long id) {
-        Type patchedType = typeMapper.typeDTOToType(findById(id));
+        Type patchedType = findById(id);
         TypeDTO patchedTypeDTO = typeMapper.typeToTypeDTO(patchedType);
         FieldsHandler.handleFields(typeDTO, patchedTypeDTO);
         patchedType = typeMapper.typeDTOToType(patchedTypeDTO);
@@ -59,6 +59,6 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public void delete(Long id) {
-        typeRepository.delete(typeMapper.typeDTOToType(findById(id)));
+        typeRepository.delete(findById(id));
     }
 }

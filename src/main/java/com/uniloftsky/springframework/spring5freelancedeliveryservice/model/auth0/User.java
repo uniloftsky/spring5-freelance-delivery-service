@@ -20,7 +20,7 @@ public class User {
     private boolean email_verified;
     private Set<Identity> identities;
 
-    private UserMetadata user_metadata;
+    private UserMetadata user_metadata = new UserMetadata();
 
     private String name;
     private String nickname;

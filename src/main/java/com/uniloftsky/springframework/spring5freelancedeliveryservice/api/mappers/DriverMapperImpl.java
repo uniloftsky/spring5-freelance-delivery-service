@@ -113,11 +113,9 @@ public class DriverMapperImpl implements DriverMapper {
         if (set == null) {
             return null;
         } else {
-            Set<Type> set1 = new HashSet(Math.max((int) ((float) set.size() / 0.75F) + 1, 16));
-            Iterator var3 = set.iterator();
+            Set<Type> set1 = new HashSet<>(Math.max((int) ((float) set.size() / 0.75F) + 1, 16));
 
-            while (var3.hasNext()) {
-                TypeDTO typeDTO = (TypeDTO) var3.next();
+            for (TypeDTO typeDTO : set) {
                 set1.add(this.typeDTOToType(typeDTO));
             }
 

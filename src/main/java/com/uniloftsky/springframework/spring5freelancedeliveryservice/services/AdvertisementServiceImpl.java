@@ -5,6 +5,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mapper
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
@@ -94,9 +95,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         AdvertisementDTO patchedAdvertisementDTO = advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
         FieldsHandler.handleFields(advertisementDTO, patchedAdvertisementDTO);
         patchedAdvertisement = advertisementMapper.advertisementDTOToAdvertisement(patchedAdvertisementDTO);
-        if (patchedAdvertisementDTO.getDriverId() != null) {
-            patchedAdvertisement.setExecutor(driverService.findById(patchedAdvertisementDTO.getDriverId()));
-        }
         save(patchedAdvertisement, user);
         return advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
     }
@@ -127,12 +125,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public AdvertisementDTO appointDriverToAdvertisement(Long advertisementId, Long driverId, String userId) {
+        if (userService.findById(userId).getUser_metadata().getDriver().getId().equals(driverId)) {
+            throw new BadRequestException("User cannot execute order what belongs to him!");
+        }
         Advertisement advertisement = findUserAdvertisement(advertisementId, userId);
         Driver driver = driverService.findById(driverId);
         advertisement.setExecutor(driver);
         advertisement.setStatus(Status.APPOINTED);
         driver.getAdvertisements().add(advertisement);
-        driverService.save(driver, userService.findById(userId));
+        driverService.save(driver, userService.findById(driver.getUserId()));
         save(advertisement, userService.findById(userId));
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
@@ -140,7 +141,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private Advertisement handleAdvertisement(Advertisement advertisement, User user) {
         Set<Type> types = new HashSet<>();
         for (Type type : advertisement.getTypes()) {
-            types.add(typeMapper.typeDTOToType(typeService.findById(type.getId())));
+            types.add(typeService.findById(type.getId()));
         }
         advertisement.setUserId(user.getUser_id());
         advertisement.getTypes().clear();

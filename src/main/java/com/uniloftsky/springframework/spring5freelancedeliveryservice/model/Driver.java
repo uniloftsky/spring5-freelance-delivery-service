@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class Driver extends BaseEntity {
     private String description;
     private String name;
 
-    @OneToMany
+    @ManyToMany
     private Set<Type> types = new HashSet<>();
 
     @OneToMany(mappedBy = "executor", cascade = CascadeType.MERGE)
