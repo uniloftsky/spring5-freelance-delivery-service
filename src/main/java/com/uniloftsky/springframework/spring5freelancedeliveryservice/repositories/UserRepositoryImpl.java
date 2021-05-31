@@ -2,7 +2,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.repositor
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.FieldsHandler;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user, UserDTO userDTO) {
         UserDTO patchUser = user.clone();
-        FieldsHandler.handleFields(userDTO, patchUser);
+        DTOHandler.handleFields(userDTO, patchUser);
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
         headers.add("authorization", "Bearer " + token);
         String getUsersUri = managementApi + "users/";

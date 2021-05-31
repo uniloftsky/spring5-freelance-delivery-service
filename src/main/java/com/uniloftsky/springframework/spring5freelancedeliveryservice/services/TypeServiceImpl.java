@@ -4,7 +4,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mapper
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.TypeDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.FieldsHandler;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +50,7 @@ public class TypeServiceImpl implements TypeService {
     public TypeDTO patch(TypeDTO typeDTO, Long id) {
         Type patchedType = findById(id);
         TypeDTO patchedTypeDTO = typeMapper.typeToTypeDTO(patchedType);
-        FieldsHandler.handleFields(typeDTO, patchedTypeDTO);
+        DTOHandler.handleFields(typeDTO, patchedTypeDTO);
         patchedType = typeMapper.typeDTOToType(patchedTypeDTO);
         save(patchedType);
         advertisementService.refreshAdvertisementsType(patchedType);

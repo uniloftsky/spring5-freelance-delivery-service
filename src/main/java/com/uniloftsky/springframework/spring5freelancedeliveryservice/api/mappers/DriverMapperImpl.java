@@ -17,9 +17,9 @@ import java.util.Set;
 @Component
 public class DriverMapperImpl implements DriverMapper {
 
-    private DriverService driverService;
+    private final DriverService driverService;
 
-    public void setDriverService(@Lazy DriverService driverService) {
+    public DriverMapperImpl(@Lazy DriverService driverService) {
         this.driverService = driverService;
     }
 
@@ -127,11 +127,9 @@ public class DriverMapperImpl implements DriverMapper {
         if (set == null) {
             return null;
         } else {
-            Set<Advertisement> set1 = new HashSet(Math.max((int) ((float) set.size() / 0.75F) + 1, 16));
-            Iterator var3 = set.iterator();
+            Set<Advertisement> set1 = new HashSet<>(Math.max((int) ((float) set.size() / 0.75F) + 1, 16));
 
-            while (var3.hasNext()) {
-                AdvertisementDTO advertisementDTO = (AdvertisementDTO) var3.next();
+            for (AdvertisementDTO advertisementDTO : set) {
                 set1.add(this.advertisementDTOToAdvertisement(advertisementDTO));
             }
 
@@ -153,7 +151,7 @@ public class DriverMapperImpl implements DriverMapper {
             advertisementDTO.setTitle(advertisement.getTitle());
             Set<Type> set = advertisement.getTypes();
             if (set != null) {
-                advertisementDTO.setTypes(new HashSet(set));
+                advertisementDTO.setTypes(new HashSet<>(set));
             }
 
             advertisementDTO.setDetails(advertisement.getDetails());
@@ -180,7 +178,7 @@ public class DriverMapperImpl implements DriverMapper {
             advertisement.setTitle(advertisementDTO.getTitle());
             Set<Type> set = advertisementDTO.getTypes();
             if (set != null) {
-                advertisement.setTypes(new HashSet(set));
+                advertisement.setTypes(new HashSet<>(set));
             }
 
             advertisement.setDetails(advertisementDTO.getDetails());

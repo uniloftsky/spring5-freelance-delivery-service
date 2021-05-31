@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/user/advertisements")
-public class AdvertisementsController {
+public class AdvertisementsController extends AbstractController {
 
     private final UserService userService;
     private final AdvertisementService advertisementService;
@@ -27,6 +27,7 @@ public class AdvertisementsController {
     private final DriverMapper driverMapper;
 
     public AdvertisementsController(UserService userService, AdvertisementService advertisementService, AdvertisementMapper advertisementMapper, DriverService driverService, DriverMapper driverMapper) {
+        super(userService);
         this.userService = userService;
         this.advertisementService = advertisementService;
         this.advertisementMapper = advertisementMapper;
@@ -35,7 +36,7 @@ public class AdvertisementsController {
     }
 
     @GetMapping
-    public Set<AdvertisementDTO> getUserAdvertisements(Authentication authentication) {
+    public Set<AdvertisementDTO> getUserAdvertisements() {
         return advertisementService.findAll().stream().map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toSet());
     }
 
@@ -46,18 +47,18 @@ public class AdvertisementsController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUserAdvertisement(@PathVariable("id") Long id, Authentication authentication) {
-        advertisementService.delete(id, userService.findById(authentication.getName()));
+        advertisementService.delete(id, getUser(authentication));
         return new ResponseEntity<>("Advertisement deleted", new HttpHeaders(), HttpStatus.OK);
     }
 
     @PostMapping
     public AdvertisementDTO createUserAdvertisement(@RequestBody Advertisement advertisement, Authentication authentication) {
-        return advertisementService.save(advertisement, userService.findById(authentication.getName()));
+        return advertisementService.save(advertisement, getUser(authentication));
     }
 
     @PatchMapping("/{id}")
     public AdvertisementDTO patchUserAdvertisement(@PathVariable("id") Long id, @RequestBody AdvertisementDTO advertisement, Authentication authentication) {
-        return advertisementService.patch(advertisement, userService.findById(authentication.getName()), id);
+        return advertisementService.patch(advertisement, getUser(authentication), id);
     }
 
     @GetMapping(value = "/appoint", params = {"advertisement_id", "driver_id"})

@@ -80,5 +80,19 @@ public class DataLoader implements CommandLineRunner {
         advertisement1.setTypes(types);
         advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
+        userDTO = new UserDTO();
+        userMetadata = new UserMetadata();
+        userMetadata.setDriver(null);
+        userMetadata.setAdvertisements(null);
+        userMetadata.setNotifications(null);
+        userDTO.setUserMetadata(userMetadata);
+        userRepository.save(userRepository.findById("auth0|60ae82c62f4b3000705f9717"), userDTO);
+
+        Driver driver1 = new Driver();
+        driver1.setDescription("I'm a uniloftsky driver");
+        driver1.setExperience(20);
+        driver1.setTypes(types);
+        driver1.setUserId("auth0|60ae82c62f4b3000705f9717");
+        driverService.save(driver1, userRepository.findById("auth0|60ae82c62f4b3000705f9717"));
     }
 }

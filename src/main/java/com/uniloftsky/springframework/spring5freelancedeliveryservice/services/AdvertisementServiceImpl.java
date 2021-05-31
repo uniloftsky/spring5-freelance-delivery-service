@@ -1,8 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
@@ -13,7 +11,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Stat
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.FieldsHandler;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -29,15 +27,11 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final UserService userService;
     private final DriverService driverService;
     private final AdvertisementMapper advertisementMapper;
-    private final DriverMapper driverMapper;
-    private final TypeMapper typeMapper;
 
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, DriverMapper driverMapper, TypeService typeService, TypeMapper typeMapper, UserService userService, DriverService driverService) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService) {
         this.advertisementRepository = advertisementRepository;
         this.advertisementMapper = advertisementMapper;
-        this.driverMapper = driverMapper;
         this.typeService = typeService;
-        this.typeMapper = typeMapper;
         this.userService = userService;
         this.driverService = driverService;
     }
@@ -81,19 +75,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     @Override
     public AdvertisementDTO save(Advertisement advertisement, User user) {
-        Advertisement savedAdvertisement = handleAdvertisement(advertisement, user);
-        UserDTO userDTO = user.clone();
-        userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
-        userDTO.getUserMetadata().getAdvertisements().add(advertisementMapper.advertisementToAdvertisementDTO(savedAdvertisement));
-        userService.save(user, userDTO);
-        return advertisementMapper.advertisementToAdvertisementDTO(savedAdvertisement);
+        return advertisementMapper.advertisementToAdvertisementDTO(
+                handleAdvertisement(advertisement, user)
+        );
     }
 
     @Override
     public AdvertisementDTO patch(AdvertisementDTO advertisementDTO, User user, Long id) {
         Advertisement patchedAdvertisement = findById(id);
         AdvertisementDTO patchedAdvertisementDTO = advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
-        FieldsHandler.handleFields(advertisementDTO, patchedAdvertisementDTO);
+        DTOHandler.handleFields(advertisementDTO, patchedAdvertisementDTO);
         patchedAdvertisement = advertisementMapper.advertisementDTOToAdvertisement(patchedAdvertisementDTO);
         save(patchedAdvertisement, user);
         return advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
@@ -139,14 +130,13 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     private Advertisement handleAdvertisement(Advertisement advertisement, User user) {
-        Set<Type> types = new HashSet<>();
-        for (Type type : advertisement.getTypes()) {
-            types.add(typeService.findById(type.getId()));
-        }
-        advertisement.setUserId(user.getUser_id());
-        advertisement.getTypes().clear();
-        advertisement.getTypes().addAll(types);
-        return advertisementRepository.save(advertisement);
+        DTOHandler.patchAdvertisementTypes(advertisement, user, typeService);
+        advertisementRepository.save(advertisement);
+        UserDTO userDTO = user.clone();
+        userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
+        userDTO.getUserMetadata().getAdvertisements().add(advertisementMapper.advertisementToAdvertisementDTO(advertisement));
+        userService.save(user, userDTO);
+        return advertisement;
     }
 
 }

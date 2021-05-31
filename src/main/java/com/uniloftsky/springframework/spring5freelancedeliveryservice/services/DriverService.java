@@ -1,5 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
 
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
@@ -23,5 +24,7 @@ public interface DriverService {
     void delete(Long driverId, User user);
 
     Driver getUserDriver(User user);
+
+    AdvertisementDTO executingAdvertisement(Long advertisementId, User user);
 
 }
