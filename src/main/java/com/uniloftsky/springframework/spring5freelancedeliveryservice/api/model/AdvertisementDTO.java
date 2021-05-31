@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.simple.JSONArray;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -27,10 +28,14 @@ public class AdvertisementDTO {
 
     @JsonProperty("deliver_to")
     private String deliverTo;
+
     private Details details;
 
     @JsonProperty("driver_id")
     private Long driverId;
+
+    private JSONArray responded = new JSONArray();
+
     private Integer price;
     private LocalDate date;
     private Integer period;

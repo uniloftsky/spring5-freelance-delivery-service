@@ -28,6 +28,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             if (advertisement.getExecutor() != null) {
                 advertisementDTO.setDriverId(advertisement.getExecutor().getId());
             }
+            advertisementDTO.setResponded(advertisement.getResponded());
             advertisementDTO.setId(advertisement.getId());
             advertisementDTO.setTitle(advertisement.getTitle());
             Set<Type> set = advertisement.getTypes();
@@ -53,6 +54,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             if (advertisementDTO.getDriverId() != null) {
                 advertisement.setExecutor(driverService.findById(advertisementDTO.getDriverId()));
             }
+            advertisement.setResponded(advertisementDTO.getResponded());
             advertisement.setDeliverFrom(advertisementDTO.getDeliverFrom());
             advertisement.setDeliverTo(advertisementDTO.getDeliverTo());
             advertisement.setId(advertisementDTO.getId());
@@ -71,6 +73,4 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             return advertisement;
         }
     }
-
-
 }

@@ -27,13 +27,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final UserService userService;
     private final DriverService driverService;
     private final AdvertisementMapper advertisementMapper;
+    private final NotificationService notificationService;
 
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService, NotificationService notificationService) {
         this.advertisementRepository = advertisementRepository;
         this.advertisementMapper = advertisementMapper;
         this.typeService = typeService;
         this.userService = userService;
         this.driverService = driverService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -125,12 +127,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         advertisement.setStatus(Status.APPOINTED);
         driver.getAdvertisements().add(advertisement);
         driverService.save(driver, userService.findById(driver.getUserId()));
+        User client = userService.findById(driver.getUserId());
+        DTOHandler.createNotificationOnEvent(client, "Вас назначили на нове замовлення!", "Вам назначено замовлення '" + advertisement.getTitle() + "'.", notificationService);
         save(advertisement, userService.findById(userId));
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
     private Advertisement handleAdvertisement(Advertisement advertisement, User user) {
         DTOHandler.patchAdvertisementTypes(advertisement, user, typeService);
+        advertisement.setUserId(user.getUser_id());
         advertisementRepository.save(advertisement);
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));

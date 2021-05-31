@@ -38,7 +38,12 @@ public class DriverController extends AbstractController {
         return driverService.patch(driverDTO, getUser(authentication));
     }
 
-    @GetMapping(value = "/executing", params = {"advertisement_id"})
+    @GetMapping(value = "/respond", params = "advertisement_id")
+    public AdvertisementDTO respondOnAdvertisement(@RequestParam("advertisement_id") Long id, Authentication authentication) {
+        return driverService.respondOnAdvertisement(id, getUser(authentication));
+    }
+
+    @GetMapping(value = "/executing", params = "advertisement_id")
     public AdvertisementDTO executeAdvertisement(@RequestParam("advertisement_id") Long id, Authentication authentication) {
         return driverService.executingAdvertisement(id, getUser(authentication));
     }

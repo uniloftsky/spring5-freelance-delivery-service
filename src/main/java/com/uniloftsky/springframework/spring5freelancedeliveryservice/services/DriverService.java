@@ -27,4 +27,6 @@ public interface DriverService {
 
     AdvertisementDTO executingAdvertisement(Long advertisementId, User user);
 
+    AdvertisementDTO respondOnAdvertisement(Long advertisementId, User user);
+
 }

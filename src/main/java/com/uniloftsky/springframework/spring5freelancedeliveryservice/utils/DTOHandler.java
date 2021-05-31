@@ -3,11 +3,14 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.utils;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.NotificationService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.TypeService;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,6 +50,20 @@ public final class DTOHandler {
         driver.setUserId(user.getUser_id());
         driver.getTypes().clear();
         driver.getTypes().addAll(types);
+    }
+
+    private static Notification createNotification(String message, String title, String userId) {
+        Notification notification = new Notification();
+        notification.setMessage(message);
+        notification.setTitle(title);
+        notification.setTimeStamp(LocalDate.now());
+        notification.setUserId(userId);
+        return notification;
+    }
+
+    public static void createNotificationOnEvent(User client, String notificationTitle, String notificationMessage, NotificationService notificationService) {
+        Notification notification = DTOHandler.createNotification(notificationMessage, notificationTitle, client.getUser_id());
+        notificationService.save(notification, client);
     }
 
 }

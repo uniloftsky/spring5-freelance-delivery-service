@@ -13,6 +13,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Stat
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
+import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -27,15 +28,17 @@ public class DriverServiceImpl implements DriverService {
     private final DriverMapper driverMapper;
     private final TypeService typeService;
     private final UserService userService;
+    private final NotificationService notificationService;
 
     private final AdvertisementMapper advertisementMapper;
     private final AdvertisementService advertisementService;
 
-    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, TypeService typeService, UserService userService, @Lazy AdvertisementMapper advertisementMapper, @Lazy AdvertisementService advertisementService) {
+    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, TypeService typeService, UserService userService, NotificationService notificationService, @Lazy AdvertisementMapper advertisementMapper, @Lazy AdvertisementService advertisementService) {
         this.driverRepository = driverRepository;
         this.driverMapper = driverMapper;
         this.typeService = typeService;
         this.userService = userService;
+        this.notificationService = notificationService;
         this.advertisementMapper = advertisementMapper;
         this.advertisementService = advertisementService;
     }
@@ -102,9 +105,22 @@ public class DriverServiceImpl implements DriverService {
     public AdvertisementDTO executingAdvertisement(Long advertisementId, User user) {
         Driver driver = getUserDriver(user);
         Advertisement advertisement = findDriverAdvertisement(advertisementId, driver);
+        User client = userService.findById(advertisement.getUserId());
+        DTOHandler.createNotificationOnEvent(client, "Ваше замовлення '" + advertisement.getTitle() + "' виконується!", "Водій " + driver.getName() + " приступив до виконання замовлення '" + advertisement.getTitle() + "'.", notificationService);
         advertisement.setStatus(Status.IN_PROCESS);
-        advertisementService.save(advertisement, user);
+        advertisementService.save(advertisement, client);
         save(driver, user);
+        return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
+    }
+
+    @Override
+    public AdvertisementDTO respondOnAdvertisement(Long advertisementId, User user) {
+        Driver driver = getUserDriver(user);
+        Advertisement advertisement = advertisementService.findById(advertisementId);
+        User client = userService.findById(advertisement.getUserId());
+        DTOHandler.createNotificationOnEvent(client, "Новий відгук на замовлення!", "Водій " + driver.getName() + " відгукнувся на ваше замовлення.", notificationService);
+        advertisement.getResponded().add(getRespondedDriverJSON(driver));
+        advertisementService.save(advertisement, client);
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
@@ -124,6 +140,16 @@ public class DriverServiceImpl implements DriverService {
             throw new ResourceNotFoundException("Driver with ID: " + driver.getId() + " has not expected advertisement with ID: " + advertisementId);
         }
         return advertisementOptional.get();
+    }
+
+    private JSONObject getRespondedDriverJSON(Driver driver) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("id", driver.getId());
+        jsonObject.put("name", driver.getName());
+        jsonObject.put("description", driver.getDescription());
+        jsonObject.put("experience", driver.getExperience());
+        jsonObject.put("types", driver.getTypes());
+        return jsonObject;
     }
 
 }

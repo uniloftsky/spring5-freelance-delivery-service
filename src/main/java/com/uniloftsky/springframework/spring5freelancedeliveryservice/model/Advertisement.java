@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.simple.JSONArray;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -30,6 +31,9 @@ public class Advertisement extends BaseEntity {
 
     @ManyToOne
     private Driver executor;
+
+    @Transient
+    private JSONArray responded = new JSONArray();
 
     private Integer price;
     private LocalDate date;
