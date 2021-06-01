@@ -1,4 +1,4 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
@@ -12,6 +12,10 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driv
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
 import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Lazy;
@@ -118,9 +122,21 @@ public class DriverServiceImpl implements DriverService {
         Driver driver = getUserDriver(user);
         Advertisement advertisement = advertisementService.findById(advertisementId);
         User client = userService.findById(advertisement.getUserId());
-        DTOHandler.createNotificationOnEvent(client, "Новий відгук на замовлення!", "Водій " + driver.getName() + " відгукнувся на ваше замовлення.", notificationService);
         advertisement.getResponded().add(getRespondedDriverJSON(driver));
         advertisementService.save(advertisement, client);
+        DTOHandler.createNotificationOnEvent(client, "Новий відгук на замовлення!", "Водій " + driver.getName() + " відгукнувся на ваше замовлення.", notificationService);
+        return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
+    }
+
+    @Override
+    public AdvertisementDTO finishAdvertisement(Long advertisementId, User user) {
+        Driver driver = getUserDriver(user);
+        Advertisement advertisement = findDriverAdvertisement(advertisementId, driver);
+        User client = userService.findById(advertisement.getUserId());
+        advertisement.setStatus(Status.READY);
+        advertisementService.save(advertisement, client);
+        save(driver, user);
+        DTOHandler.createNotificationOnEvent(client, "Ваше замовлення виконано!", "Водій " + driver.getName() + " виконав ваше замовлення: '" + advertisement.getTitle() + "'.", notificationService);
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
@@ -151,5 +167,17 @@ public class DriverServiceImpl implements DriverService {
         jsonObject.put("types", driver.getTypes());
         return jsonObject;
     }
+
+/*    private Advertisement changeAdvertisementStatusWithNotification(Status status, User user, Long advertisementId, String notificationTitle, String notificationMessage) {
+        Driver driver = getUserDriver(user);
+        Advertisement advertisement = findDriverAdvertisement(advertisementId, driver);
+        User client = userService.findById(advertisement.getUserId());
+        DTOHandler.createNotificationOnEvent(client, notificationTitle, notificationMessage, notificationService);
+        advertisement.setStatus(status);
+        advertisementService.save(advertisement, client);
+        save(driver, user);
+        return advertisement;
+    }*/
+
 
 }

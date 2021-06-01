@@ -4,9 +4,9 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mapper
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.AdvertisementService;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +36,7 @@ public class AdvertisementsController extends AbstractController {
     }
 
     @GetMapping
-    public Set<AdvertisementDTO> getUserAdvertisements() {
+    public Set<AdvertisementDTO> getUserAdvertisements(Authentication authentication) {
         return advertisementService.findAll().stream().map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toSet());
     }
 

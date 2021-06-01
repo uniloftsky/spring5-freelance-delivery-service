@@ -3,8 +3,8 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.controlle
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +44,13 @@ public class DriverController extends AbstractController {
     }
 
     @GetMapping(value = "/executing", params = "advertisement_id")
-    public AdvertisementDTO executeAdvertisement(@RequestParam("advertisement_id") Long id, Authentication authentication) {
+    public AdvertisementDTO executingAdvertisement(@RequestParam("advertisement_id") Long id, Authentication authentication) {
         return driverService.executingAdvertisement(id, getUser(authentication));
+    }
+
+    @GetMapping(value = "/done", params = "advertisement_id")
+    public AdvertisementDTO finishAdvertisement(@RequestParam("advertisement_id") Long id, Authentication authentication) {
+        return driverService.finishAdvertisement(id, getUser(authentication));
     }
 
 }

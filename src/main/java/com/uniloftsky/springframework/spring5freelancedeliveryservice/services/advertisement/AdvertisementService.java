@@ -1,4 +1,4 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;

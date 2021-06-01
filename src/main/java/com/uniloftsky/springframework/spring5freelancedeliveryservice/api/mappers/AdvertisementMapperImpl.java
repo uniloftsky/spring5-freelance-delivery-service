@@ -3,7 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappe
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -42,6 +42,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             advertisementDTO.setPeriod(advertisement.getPeriod());
             advertisementDTO.setDescription(advertisement.getDescription());
             advertisementDTO.setStatus(advertisement.getStatus());
+            advertisementDTO.setUserId(advertisement.getUserId());
             return advertisementDTO;
         }
     }
@@ -70,6 +71,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             advertisement.setPeriod(advertisementDTO.getPeriod());
             advertisement.setDescription(advertisementDTO.getDescription());
             advertisement.setStatus(advertisementDTO.getStatus());
+            advertisement.setUserId(advertisementDTO.getUserId());
             return advertisement;
         }
     }

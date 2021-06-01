@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.user;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 

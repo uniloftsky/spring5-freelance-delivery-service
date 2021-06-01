@@ -11,9 +11,9 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.NotificationRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.UserRepository;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.AdvertisementService;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.NotificationService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

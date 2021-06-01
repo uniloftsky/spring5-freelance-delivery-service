@@ -1,8 +1,8 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.user;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.NotificationService;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.controlle
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.UserService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 

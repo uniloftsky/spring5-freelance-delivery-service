@@ -6,7 +6,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -160,6 +160,7 @@ public class DriverMapperImpl implements DriverMapper {
             advertisementDTO.setPeriod(advertisement.getPeriod());
             advertisementDTO.setDescription(advertisement.getDescription());
             advertisementDTO.setStatus(advertisement.getStatus());
+            advertisementDTO.setUserId(advertisement.getUserId());
             return advertisementDTO;
         }
     }
@@ -187,6 +188,7 @@ public class DriverMapperImpl implements DriverMapper {
             advertisement.setPeriod(advertisementDTO.getPeriod());
             advertisement.setDescription(advertisementDTO.getDescription());
             advertisement.setStatus(advertisementDTO.getStatus());
+            advertisement.setUserId(advertisementDTO.getUserId());
             return advertisement;
         }
     }

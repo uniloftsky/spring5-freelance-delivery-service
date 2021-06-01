@@ -6,8 +6,8 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driv
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.NotificationService;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.TypeService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;

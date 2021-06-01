@@ -1,4 +1,4 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
@@ -28,5 +28,7 @@ public interface DriverService {
     AdvertisementDTO executingAdvertisement(Long advertisementId, User user);
 
     AdvertisementDTO respondOnAdvertisement(Long advertisementId, User user);
+
+    AdvertisementDTO finishAdvertisement(Long advertisementId, User user);
 
 }

@@ -1,4 +1,4 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.services;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
@@ -11,6 +11,10 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Stat
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
 import org.springframework.stereotype.Service;
 
@@ -55,11 +59,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             throw new ResourceNotFoundException("User has not expected advertisement with ID: " + id);
         } else {
             AdvertisementDTO foundAdvertisementDTO = advertisementDTOOptional.get();
-            Advertisement advertisement = advertisementMapper.advertisementDTOToAdvertisement(foundAdvertisementDTO);
-            if (foundAdvertisementDTO.getDriverId() != null) {
-                advertisement.setExecutor(driverService.findById(foundAdvertisementDTO.getDriverId()));
-            }
-            return advertisement;
+            return advertisementMapper.advertisementDTOToAdvertisement(foundAdvertisementDTO);
         }
     }
 

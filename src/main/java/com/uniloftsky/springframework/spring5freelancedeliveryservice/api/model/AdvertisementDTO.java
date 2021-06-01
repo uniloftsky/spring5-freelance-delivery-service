@@ -42,4 +42,7 @@ public class AdvertisementDTO {
     private String description;
     private Status status = Status.ACTIVE;
 
+    @JsonProperty("user_id")
+    private String userId;
+
 }

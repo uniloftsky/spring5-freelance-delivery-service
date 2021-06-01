@@ -2,7 +2,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.controlle
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.TypeDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.TypeService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
