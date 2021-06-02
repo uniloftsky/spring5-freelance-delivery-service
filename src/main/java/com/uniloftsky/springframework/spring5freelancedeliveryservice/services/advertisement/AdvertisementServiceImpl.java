@@ -80,7 +80,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     }
 
     @Override
-    public Page<Advertisement> filter(AdvertisementPage advertisementPage, AdvertisementSearchCriteria advertisementSearchCriteria) {
+    public Page<AdvertisementDTO> filter(AdvertisementPage advertisementPage, AdvertisementSearchCriteria advertisementSearchCriteria) {
         return advertisementCriteriaRepository.findAllWithFilters(advertisementPage, advertisementSearchCriteria);
     }
 

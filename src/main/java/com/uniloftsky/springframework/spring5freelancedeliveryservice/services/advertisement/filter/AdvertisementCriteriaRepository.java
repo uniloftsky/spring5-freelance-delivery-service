@@ -1,6 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 import org.springframework.data.domain.*;
@@ -15,6 +16,7 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Repository
 public class AdvertisementCriteriaRepository {
@@ -31,8 +33,8 @@ public class AdvertisementCriteriaRepository {
         this.typeService = typeService;
     }
 
-    public Page<Advertisement> findAllWithFilters(AdvertisementPage advertisementPage,
-                                                  AdvertisementSearchCriteria advertisementSearchCriteria) {
+    public Page<AdvertisementDTO> findAllWithFilters(AdvertisementPage advertisementPage,
+                                                     AdvertisementSearchCriteria advertisementSearchCriteria) {
         CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(Advertisement.class);
         Root<Advertisement> advertisementRoot = criteriaQuery.from(Advertisement.class);
         Predicate predicate = getPredicate(advertisementSearchCriteria, advertisementRoot);
@@ -47,7 +49,7 @@ public class AdvertisementCriteriaRepository {
 
         long itemsCount = getAdvertisementsCount(predicate);
 
-        return new PageImpl<>(typedQuery.getResultList(), pageable, itemsCount);
+        return new PageImpl<>(typedQuery.getResultList().stream().map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toList()), pageable, itemsCount);
     }
 
     private Predicate getPredicate(AdvertisementSearchCriteria advertisementSearchCriteria,

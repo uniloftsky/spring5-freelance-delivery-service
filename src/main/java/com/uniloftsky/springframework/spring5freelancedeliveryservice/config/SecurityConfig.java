@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/admin/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
-                        "/api").permitAll()
+                        "/api",
+                        "/api/v1/public/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .cors()

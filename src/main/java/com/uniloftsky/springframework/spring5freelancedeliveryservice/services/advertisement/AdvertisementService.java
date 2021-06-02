@@ -20,7 +20,7 @@ public interface AdvertisementService {
 
     Set<AdvertisementDTO> findAllByUser(String userId);
 
-    Page<Advertisement> filter(AdvertisementPage advertisementPage, AdvertisementSearchCriteria advertisementSearchCriteria);
+    Page<AdvertisementDTO> filter(AdvertisementPage advertisementPage, AdvertisementSearchCriteria advertisementSearchCriteria);
 
     Advertisement save(Advertisement advertisement);
 
