@@ -57,20 +57,20 @@ public class AdvertisementCriteriaRepository {
         List<Predicate> predicates = new ArrayList<>();
         if (Objects.nonNull(advertisementSearchCriteria.getTitle())) {
             predicates.add(
-                    criteriaBuilder.like(advertisementRoot.get("title"),
-                            "%" + advertisementSearchCriteria.getTitle() + "%")
+                    criteriaBuilder.like(criteriaBuilder.lower(advertisementRoot.get("title")),
+                            "%" + advertisementSearchCriteria.getTitle().toLowerCase() + "%")
             );
         }
         if (Objects.nonNull(advertisementSearchCriteria.getDeliverFrom())) {
             predicates.add(
-                    criteriaBuilder.like(advertisementRoot.get("deliverFrom"),
-                            "%" + advertisementSearchCriteria.getDeliverFrom() + "%")
+                    criteriaBuilder.like(criteriaBuilder.lower(advertisementRoot.get("deliverFrom")),
+                            "%" + advertisementSearchCriteria.getDeliverFrom().toLowerCase() + "%")
             );
         }
         if (Objects.nonNull(advertisementSearchCriteria.getDeliverTo())) {
             predicates.add(
-                    criteriaBuilder.like(advertisementRoot.get("deliverTo"),
-                            "%" + advertisementSearchCriteria.getDeliverTo() + "%")
+                    criteriaBuilder.like(criteriaBuilder.lower(advertisementRoot.get("deliverTo")),
+                            "%" + advertisementSearchCriteria.getDeliverTo().toLowerCase() + "%")
             );
         }
         if (Objects.nonNull(advertisementSearchCriteria.getMaxPrice())) {
@@ -80,7 +80,7 @@ public class AdvertisementCriteriaRepository {
                 );
             }
         }
-        if (Objects.nonNull(advertisementSearchCriteria.getMaxPrice())) {
+        if (Objects.nonNull(advertisementSearchCriteria.getMinPrice())) {
             if (advertisementRoot.get("price") != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(advertisementRoot.get("price"),
                         advertisementSearchCriteria.getMinPrice())

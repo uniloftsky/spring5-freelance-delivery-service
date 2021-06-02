@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.json.simple.JSONArray;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -20,12 +22,18 @@ import java.util.Set;
 public class AdvertisementDTO {
 
     private Long id;
+
+    @NotBlank
     private String title;
+
+    @NotNull
     private Set<Type> types;
 
+    @NotBlank
     @JsonProperty("deliver_from")
     private String deliverFrom;
 
+    @NotBlank
     @JsonProperty("deliver_to")
     private String deliverTo;
 

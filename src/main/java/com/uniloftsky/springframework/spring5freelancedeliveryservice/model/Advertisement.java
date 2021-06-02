@@ -1,9 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.json.simple.JSONArray;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 public class Advertisement extends BaseEntity {
 

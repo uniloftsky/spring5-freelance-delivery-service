@@ -74,37 +74,21 @@ public class DataLoader implements CommandLineRunner {
         driver.setUserId("auth0|607d94db1c9629006daa7adf");
         driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
-        Advertisement advertisement = new Advertisement();
-        advertisement.setDate(LocalDate.now());
-        advertisement.setDeliverFrom("Бердичів");
-        advertisement.setDeliverTo("Житомир");
-        advertisement.setDescription("Desc");
-        advertisement.setTitle("Delivery");
-        advertisement.setTypes(types);
+        Advertisement advertisement = Advertisement.builder().title("Deliver").date(LocalDate.now()).deliverFrom("Бердичів").deliverTo("Житомир").description("Desc").types(types).price(100).build();
         advertisementService.save(advertisement, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement1");
         Thread.sleep(1000);
 
-        Advertisement advertisement1 = new Advertisement();
-        advertisement1.setDate(LocalDate.now());
-        advertisement1.setDeliverFrom("Київ");
-        advertisement1.setDeliverTo("Львів");
-        advertisement1.setDescription("Desc");
-        advertisement1.setTitle("Доставка");
-        advertisement1.setTypes(types.stream().limit(2).collect(Collectors.toSet()));
+        Advertisement advertisement1 = Advertisement.builder().date(LocalDate.now()).deliverFrom("Київ").deliverTo("Львів").description("Desc").title("Доставка")
+                .types(types.stream().limit(2).collect(Collectors.toSet())).price(200).build();
         advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement2");
         Thread.sleep(1000);
 
-        Advertisement advertisement2 = new Advertisement();
-        advertisement2.setDate(LocalDate.now());
-        advertisement2.setDeliverFrom("Житомир");
-        advertisement2.setDeliverTo("Козятин");
-        advertisement2.setDescription("Desc");
-        advertisement2.setTitle("Repo");
-        advertisement2.setTypes(types.stream().skip(2).collect(Collectors.toSet()));
+        Advertisement advertisement2 = Advertisement.builder().date(LocalDate.now()).deliverFrom("Житомир").deliverTo("Козятин").description("Desc").title("Repo")
+                .types(types.stream().skip(2).collect(Collectors.toSet())).price(1000).build();
         advertisementService.save(advertisement2, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement3");
