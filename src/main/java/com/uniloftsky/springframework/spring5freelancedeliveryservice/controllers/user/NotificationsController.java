@@ -23,16 +23,19 @@ public class NotificationsController {
         this.notificationService = notificationService;
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Set<Notification> getUserNotifications(Authentication authentication) {
         return userService.findById(authentication.getName()).getUser_metadata().getNotifications();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public Notification getUserNotification(@PathVariable("id") Long id, Authentication authentication) {
         return notificationService.findUserNotification(id, authentication.getName());
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUserNotification(@PathVariable("id") Long id, Authentication authentication) {
         notificationService.delete(id, userService.findById(authentication.getName()));
