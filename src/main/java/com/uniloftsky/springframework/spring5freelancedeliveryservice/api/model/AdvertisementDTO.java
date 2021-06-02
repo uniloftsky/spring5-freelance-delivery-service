@@ -47,7 +47,10 @@ public class AdvertisementDTO {
     private Integer price;
     private LocalDate date;
     private Integer period;
+
+    @NotBlank
     private String description;
+
     private Status status = Status.ACTIVE;
 
     @JsonProperty("user_id")
