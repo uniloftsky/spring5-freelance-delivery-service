@@ -3,7 +3,6 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.controlle
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
@@ -52,8 +51,8 @@ public class AdvertisementsController extends AbstractController {
     }
 
     @PostMapping
-    public AdvertisementDTO createUserAdvertisement(@RequestBody Advertisement advertisement, Authentication authentication) {
-        return advertisementService.save(advertisement, getUser(authentication));
+    public AdvertisementDTO createUserAdvertisement(@RequestBody AdvertisementDTO advertisement, Authentication authentication) {
+        return advertisementService.save(advertisementMapper.advertisementDTOToAdvertisement(advertisement), getUser(authentication));
     }
 
     @PatchMapping("/{id}")

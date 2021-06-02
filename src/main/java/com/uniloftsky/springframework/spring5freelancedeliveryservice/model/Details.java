@@ -15,6 +15,7 @@ public class Details extends BaseEntity {
     private Integer width;
     private Integer length;
     private Integer weight;
+    private Integer peopleCount;
 
     @OneToOne
     private Advertisement advertisement;
