@@ -9,6 +9,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
@@ -71,7 +72,7 @@ public class DriverServiceImpl implements DriverService {
         if (user.getUser_metadata().getDriver() != null && driver.getId() == null) {
             throw new BadRequestException("Given user is already a driver!");
         } else {
-            return handleDriver(driver, user);
+            return resaveDriverToUser(driver, user);
         }
     }
 
@@ -109,11 +110,10 @@ public class DriverServiceImpl implements DriverService {
     public AdvertisementDTO executingAdvertisement(Long advertisementId, User user) {
         Driver driver = getUserDriver(user);
         Advertisement advertisement = findDriverAdvertisement(advertisementId, driver);
-        User client = userService.findById(advertisement.getUserId());
-        DTOHandler.createNotificationOnEvent(client, "Ваше замовлення '" + advertisement.getTitle() + "' виконується!", "Водій " + driver.getName() + " приступив до виконання замовлення '" + advertisement.getTitle() + "'.", notificationService);
-        advertisement.setStatus(Status.IN_PROCESS);
-        advertisementService.save(advertisement, client);
-        save(driver, user);
+        changeStatusOfAdvertisementWithNotification(driver, advertisement, Status.IN_PROCESS, Notification.builder()
+                .message("Водій " + driver.getName() + " приступив до виконання замовлення '" + advertisement.getTitle() + "'.")
+                .title("Ваше замовлення '" + advertisement.getTitle() + "' виконується!")
+                .build(), user);
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
@@ -124,7 +124,7 @@ public class DriverServiceImpl implements DriverService {
         User client = userService.findById(advertisement.getUserId());
         advertisement.getResponded().add(getRespondedDriverJSON(driver));
         advertisementService.save(advertisement, client);
-        DTOHandler.createNotificationOnEvent(client, "Новий відгук на замовлення!", "Водій " + driver.getName() + " відгукнувся на ваше замовлення.", notificationService);
+        DTOHandler.createNotificationOnEvent(client, Notification.builder().message("Водій " + driver.getName() + " відгукнувся на ваше замовлення.").title("Новий відгук на замовлення!").build(), notificationService);
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
@@ -132,15 +132,14 @@ public class DriverServiceImpl implements DriverService {
     public AdvertisementDTO finishAdvertisement(Long advertisementId, User user) {
         Driver driver = getUserDriver(user);
         Advertisement advertisement = findDriverAdvertisement(advertisementId, driver);
-        User client = userService.findById(advertisement.getUserId());
-        advertisement.setStatus(Status.READY);
-        advertisementService.save(advertisement, client);
-        save(driver, user);
-        DTOHandler.createNotificationOnEvent(client, "Ваше замовлення виконано!", "Водій " + driver.getName() + " виконав ваше замовлення: '" + advertisement.getTitle() + "'.", notificationService);
+        changeStatusOfAdvertisementWithNotification(driver, advertisement, Status.READY, Notification.builder()
+                .message("Водій " + driver.getName() + " виконав ваше замовлення: '" + advertisement.getTitle() + "'.")
+                .title("Ваше замовлення виконано!")
+                .build(), user);
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
-    private Driver handleDriver(Driver driver, User user) {
+    private Driver resaveDriverToUser(Driver driver, User user) {
         DTOHandler.patchAdvertisementTypes(driver, user, typeService);
         driverRepository.save(driver);
         UserDTO userDTO = user.clone();
@@ -166,6 +165,14 @@ public class DriverServiceImpl implements DriverService {
         jsonObject.put("experience", driver.getExperience());
         jsonObject.put("types", driver.getTypes());
         return jsonObject;
+    }
+
+    private void changeStatusOfAdvertisementWithNotification(Driver driver, Advertisement advertisement, Status status, Notification notification, User user) {
+        User client = userService.findById(advertisement.getUserId());
+        DTOHandler.createNotificationOnEvent(client, notification, notificationService);
+        advertisement.setStatus(status);
+        advertisementService.save(advertisement, client);
+        save(driver, user);
     }
 
 /*    private Advertisement changeAdvertisementStatusWithNotification(Status status, User user, Long advertisementId, String notificationTitle, String notificationMessage) {

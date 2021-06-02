@@ -61,9 +61,8 @@ public final class DTOHandler {
         return notification;
     }
 
-    public static void createNotificationOnEvent(User client, String notificationTitle, String notificationMessage, NotificationService notificationService) {
-        Notification notification = DTOHandler.createNotification(notificationMessage, notificationTitle, client.getUser_id());
-        notificationService.save(notification, client);
+    public static void createNotificationOnEvent(User client, Notification notification, NotificationService notificationService) {
+        notificationService.save(DTOHandler.createNotification(notification.getMessage(), notification.getTitle(), client.getUser_id()), client);
     }
 
 }

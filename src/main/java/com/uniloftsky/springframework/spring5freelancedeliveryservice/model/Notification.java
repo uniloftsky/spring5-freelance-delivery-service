@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @Entity
 public class Notification extends BaseEntity {
 

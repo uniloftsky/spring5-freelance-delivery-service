@@ -5,10 +5,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.*;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementCriteriaRepository;
@@ -95,7 +92,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     public AdvertisementDTO save(Advertisement advertisement, User user) {
         return advertisementMapper.advertisementToAdvertisementDTO(
-                handleAdvertisement(advertisement, user)
+                resaveAdvertisementToUser(advertisement, user)
         );
     }
 
@@ -140,17 +137,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
         Advertisement advertisement = findUserAdvertisement(advertisementId, userId);
         Driver driver = driverService.findById(driverId);
-        advertisement.setExecutor(driver);
-        advertisement.setStatus(Status.APPOINTED);
-        driver.getAdvertisements().add(advertisement);
-        driverService.save(driver, userService.findById(driver.getUserId()));
-        User client = userService.findById(driver.getUserId());
-        DTOHandler.createNotificationOnEvent(client, "Вас назначили на нове замовлення!", "Вам назначено замовлення '" + advertisement.getTitle() + "'.", notificationService);
+        handleDriverAndAdvertisementWhileAppointing(driver, advertisement);
         save(advertisement, userService.findById(userId));
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
-    private Advertisement handleAdvertisement(Advertisement advertisement, User user) {
+    private Advertisement resaveAdvertisementToUser(Advertisement advertisement, User user) {
         DTOHandler.patchAdvertisementTypes(advertisement, user, typeService);
         advertisement.setUserId(user.getUser_id());
         if (advertisement.getDate() == null) {
@@ -162,6 +154,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         userDTO.getUserMetadata().getAdvertisements().add(advertisementMapper.advertisementToAdvertisementDTO(advertisement));
         userService.save(user, userDTO);
         return advertisement;
+    }
+
+    private void handleDriverAndAdvertisementWhileAppointing(Driver driver, Advertisement advertisement) {
+        advertisement.setExecutor(driver);
+        advertisement.setStatus(Status.APPOINTED);
+        driver.getAdvertisements().add(advertisement);
+        driverService.save(driver, userService.findById(driver.getUserId()));
+        User client = userService.findById(driver.getUserId());
+        DTOHandler.createNotificationOnEvent(client, Notification.builder().message("Вам назначено замовлення '" + advertisement.getTitle() + "'.").title("Вас назначили на нове замовлення!").build(), notificationService);
     }
 
 }
