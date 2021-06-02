@@ -37,6 +37,11 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
+    public Type findByName(String name) {
+        return typeRepository.findByName(name);
+    }
+
+    @Override
     public Type save(Type type) {
         return typeRepository.save(type);
     }

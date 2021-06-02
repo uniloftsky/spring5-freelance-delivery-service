@@ -14,13 +14,16 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositori
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -45,7 +48,7 @@ public class DataLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws InterruptedException {
 
         UserDTO userDTO = new UserDTO();
         UserMetadata userMetadata = new UserMetadata();
@@ -71,14 +74,41 @@ public class DataLoader implements CommandLineRunner {
         driver.setUserId("auth0|607d94db1c9629006daa7adf");
         driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
+        Advertisement advertisement = new Advertisement();
+        advertisement.setDate(LocalDate.now());
+        advertisement.setDeliverFrom("Бердичів");
+        advertisement.setDeliverTo("Житомир");
+        advertisement.setDescription("Desc");
+        advertisement.setTitle("Delivery");
+        advertisement.setTypes(types);
+        advertisementService.save(advertisement, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
+
+        log.info("Saved advertisement1");
+        Thread.sleep(1000);
+
         Advertisement advertisement1 = new Advertisement();
         advertisement1.setDate(LocalDate.now());
-        advertisement1.setDeliverFrom("Point1");
-        advertisement1.setDeliverTo("Point2");
+        advertisement1.setDeliverFrom("Київ");
+        advertisement1.setDeliverTo("Львів");
         advertisement1.setDescription("Desc");
-        advertisement1.setTitle("Delivery");
-        advertisement1.setTypes(types);
+        advertisement1.setTitle("Доставка");
+        advertisement1.setTypes(types.stream().limit(2).collect(Collectors.toSet()));
         advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
+
+        log.info("Saved advertisement2");
+        Thread.sleep(1000);
+
+        Advertisement advertisement2 = new Advertisement();
+        advertisement2.setDate(LocalDate.now());
+        advertisement2.setDeliverFrom("Житомир");
+        advertisement2.setDeliverTo("Козятин");
+        advertisement2.setDescription("Desc");
+        advertisement2.setTitle("Repo");
+        advertisement2.setTypes(types.stream().skip(2).collect(Collectors.toSet()));
+        advertisementService.save(advertisement2, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
+
+        log.info("Saved advertisement3");
+        Thread.sleep(1000);
 
         userDTO = new UserDTO();
         userMetadata = new UserMetadata();
@@ -94,5 +124,7 @@ public class DataLoader implements CommandLineRunner {
         driver1.setTypes(types);
         driver1.setUserId("auth0|60ae82c62f4b3000705f9717");
         driverService.save(driver1, userRepository.findById("auth0|60ae82c62f4b3000705f9717"));
+
+        log.info("Data loaded successfully");
     }
 }

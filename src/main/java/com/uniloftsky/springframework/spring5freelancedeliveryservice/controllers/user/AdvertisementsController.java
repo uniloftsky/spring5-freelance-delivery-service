@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/user/advertisements")
@@ -36,7 +35,7 @@ public class AdvertisementsController extends AbstractController {
 
     @GetMapping
     public Set<AdvertisementDTO> getUserAdvertisements(Authentication authentication) {
-        return advertisementService.findAll().stream().map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toSet());
+        return advertisementService.findAllByUser(authentication.getName());
     }
 
     @GetMapping("/{id}")

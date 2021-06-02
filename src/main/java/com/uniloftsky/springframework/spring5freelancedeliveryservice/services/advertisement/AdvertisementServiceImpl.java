@@ -11,11 +11,15 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Stat
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.AdvertisementRepository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementCriteriaRepository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementPage;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementSearchCriteria;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,14 +32,16 @@ import java.util.stream.Collectors;
 public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementRepository advertisementRepository;
+    private final AdvertisementCriteriaRepository advertisementCriteriaRepository;
     private final TypeService typeService;
     private final UserService userService;
     private final DriverService driverService;
     private final AdvertisementMapper advertisementMapper;
     private final NotificationService notificationService;
 
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService, NotificationService notificationService) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementCriteriaRepository advertisementCriteriaRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService, NotificationService notificationService) {
         this.advertisementRepository = advertisementRepository;
+        this.advertisementCriteriaRepository = advertisementCriteriaRepository;
         this.advertisementMapper = advertisementMapper;
         this.typeService = typeService;
         this.userService = userService;
@@ -69,6 +75,16 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         Set<Advertisement> advertisements = new HashSet<>();
         advertisementRepository.findAll().iterator().forEachRemaining(advertisements::add);
         return advertisements;
+    }
+
+    @Override
+    public Set<AdvertisementDTO> findAllByUser(String userId) {
+        return advertisementRepository.findAll().stream().filter(e -> e.getUserId().equals(userId)).map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Page<Advertisement> filter(AdvertisementPage advertisementPage, AdvertisementSearchCriteria advertisementSearchCriteria) {
+        return advertisementCriteriaRepository.findAllWithFilters(advertisementPage, advertisementSearchCriteria);
     }
 
     @Override

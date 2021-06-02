@@ -11,6 +11,8 @@ public interface TypeService {
 
     Type findById(Long id);
 
+    Type findByName(String name);
+
     Type save(Type type);
 
     TypeDTO save(TypeDTO typeDTO);

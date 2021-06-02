@@ -4,6 +4,9 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementPage;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementSearchCriteria;
+import org.springframework.data.domain.Page;
 
 import java.util.Set;
 
@@ -14,6 +17,10 @@ public interface AdvertisementService {
     Advertisement findUserAdvertisement(Long id, String userId);
 
     Set<Advertisement> findAll();
+
+    Set<AdvertisementDTO> findAllByUser(String userId);
+
+    Page<Advertisement> filter(AdvertisementPage advertisementPage, AdvertisementSearchCriteria advertisementSearchCriteria);
 
     Advertisement save(Advertisement advertisement);
 
