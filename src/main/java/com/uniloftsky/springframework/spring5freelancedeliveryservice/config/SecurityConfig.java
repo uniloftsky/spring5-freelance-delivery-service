@@ -28,13 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/h2-console/**",
+/*                .mvcMatchers("/h2-console/**",
                         "/api/v1/admin/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
                         "/api",
-                        "/api/v1/public/**").permitAll()
-                .anyRequest().authenticated()
+                        "/api/v1/public/**",
+                        "/").permitAll()*/
+                .mvcMatchers("/api/v1/user/**").authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .cors()
                 .configurationSource(corsConfigurationSource())
