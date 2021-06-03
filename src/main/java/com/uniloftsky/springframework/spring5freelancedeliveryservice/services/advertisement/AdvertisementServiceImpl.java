@@ -18,6 +18,7 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.n
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -35,19 +36,20 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final TypeService typeService;
     private final UserService userService;
     private final DriverService driverService;
-    private final AdvertisementMapper advertisementMapper;
-    private final DriverMapper driverMapper;
     private final NotificationService notificationService;
 
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementCriteriaRepository advertisementCriteriaRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService, DriverMapper driverMapper, NotificationService notificationService) {
+    private final AdvertisementMapper advertisementMapper;
+    private final DriverMapper driverMapper;
+
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementCriteriaRepository advertisementCriteriaRepository, TypeService typeService, UserService userService, @Lazy DriverService driverService, NotificationService notificationService, AdvertisementMapper advertisementMapper, DriverMapper driverMapper) {
         this.advertisementRepository = advertisementRepository;
         this.advertisementCriteriaRepository = advertisementCriteriaRepository;
-        this.advertisementMapper = advertisementMapper;
         this.typeService = typeService;
         this.userService = userService;
         this.driverService = driverService;
-        this.driverMapper = driverMapper;
         this.notificationService = notificationService;
+        this.advertisementMapper = advertisementMapper;
+        this.driverMapper = driverMapper;
     }
 
     @Override

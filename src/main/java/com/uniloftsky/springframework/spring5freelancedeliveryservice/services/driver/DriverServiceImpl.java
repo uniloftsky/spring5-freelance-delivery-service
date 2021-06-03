@@ -11,12 +11,16 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.*;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.filter.DriverCriteriaRepository;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.filter.DriverPage;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.filter.DriverSearchCriteria;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
 import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -28,22 +32,24 @@ import java.util.stream.Collectors;
 public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
-    private final DriverMapper driverMapper;
+    private final DriverCriteriaRepository driverCriteriaRepository;
     private final TypeService typeService;
     private final UserService userService;
     private final NotificationService notificationService;
-
-    private final AdvertisementMapper advertisementMapper;
     private final AdvertisementService advertisementService;
 
-    public DriverServiceImpl(DriverRepository driverRepository, DriverMapper driverMapper, TypeService typeService, UserService userService, NotificationService notificationService, @Lazy AdvertisementMapper advertisementMapper, @Lazy AdvertisementService advertisementService) {
+    private final AdvertisementMapper advertisementMapper;
+    private final DriverMapper driverMapper;
+
+    public DriverServiceImpl(DriverRepository driverRepository, DriverCriteriaRepository driverCriteriaRepository, TypeService typeService, UserService userService, NotificationService notificationService, @Lazy AdvertisementService advertisementService, @Lazy AdvertisementMapper advertisementMapper, DriverMapper driverMapper) {
         this.driverRepository = driverRepository;
-        this.driverMapper = driverMapper;
+        this.driverCriteriaRepository = driverCriteriaRepository;
         this.typeService = typeService;
         this.userService = userService;
         this.notificationService = notificationService;
-        this.advertisementMapper = advertisementMapper;
         this.advertisementService = advertisementService;
+        this.advertisementMapper = advertisementMapper;
+        this.driverMapper = driverMapper;
     }
 
     @Override
@@ -72,6 +78,11 @@ public class DriverServiceImpl implements DriverService {
             return false;
         }).map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toSet());
 
+    }
+
+    @Override
+    public Page<DriverDTO> filterDrivers(DriverPage driverPage, DriverSearchCriteria driverSearchCriteria) {
+        return driverCriteriaRepository.findAllWithFilters(driverPage, driverSearchCriteria);
     }
 
     @Override

@@ -124,7 +124,4 @@ public class AdvertisementCriteriaRepository {
         return entityManager.createQuery(countQuery).getSingleResult();
     }
 
-//    private String getTypeNameOfAdvertisement()
-
-
 }

@@ -4,6 +4,9 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mod
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.filter.DriverPage;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.filter.DriverSearchCriteria;
+import org.springframework.data.domain.Page;
 
 import java.util.Set;
 
@@ -14,6 +17,8 @@ public interface DriverService {
     Set<Driver> findAll();
 
     Set<AdvertisementDTO> findRecommendedAdvertisements(User user);
+
+    Page<DriverDTO> filterDrivers(DriverPage driverPage, DriverSearchCriteria driverSearchCriteria);
 
     Driver save(Driver driver);
 

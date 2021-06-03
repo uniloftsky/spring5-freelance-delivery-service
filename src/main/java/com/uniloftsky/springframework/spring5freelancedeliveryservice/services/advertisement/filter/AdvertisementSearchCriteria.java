@@ -10,10 +10,10 @@ public class AdvertisementSearchCriteria {
 
     private String title;
     private String[] types;
-    private String deliverFrom;
-    private String deliverTo;
-    private Integer maxPrice;
-    private Integer minPrice;
+    private String deliver_from;
+    private String deliver_to;
+    private Integer max_price;
+    private Integer min_price;
     private Status status;
 
 }

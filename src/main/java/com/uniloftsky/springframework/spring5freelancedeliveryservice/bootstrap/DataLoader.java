@@ -68,6 +68,7 @@ public class DataLoader implements CommandLineRunner {
         driver.setDescription("I'm driver");
         driver.setExperience(10);
         driver.setTypes(types);
+        driver.setName("Bob Marley");
         driver.setUserId("auth0|607d94db1c9629006daa7adf");
         driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
@@ -103,6 +104,7 @@ public class DataLoader implements CommandLineRunner {
         Driver driver1 = new Driver();
         driver1.setDescription("I'm a uniloftsky driver");
         driver1.setExperience(20);
+        driver1.setName("Anton Kulyk");
         driver1.setTypes(types.stream().skip(2).collect(Collectors.toSet()));
         driver1.setUserId("auth0|60ae82c62f4b3000705f9717");
         driverService.save(driver1, userRepository.findById("auth0|60ae82c62f4b3000705f9717"));

@@ -7,6 +7,8 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.a
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementPage;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementSearchCriteria;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.filter.DriverPage;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.filter.DriverSearchCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 public class MainController {
@@ -45,8 +46,8 @@ public class MainController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/api/v1/public/drivers")
-    public Set<DriverDTO> filterDrivers() {
-        return driverService.findAll().stream().map(driverMapper::driverToDriverDTO).collect(Collectors.toSet());
+    public Page<DriverDTO> filterDrivers(DriverPage driverPage, DriverSearchCriteria driverSearchCriteria) {
+        return driverService.filterDrivers(driverPage, driverSearchCriteria);
     }
 
     @ResponseStatus(HttpStatus.OK)
