@@ -1,6 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.TypeDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.TypeDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 
 import java.util.Set;

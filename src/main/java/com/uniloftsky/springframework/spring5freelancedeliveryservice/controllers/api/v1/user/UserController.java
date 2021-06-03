@@ -1,6 +1,6 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.user;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.api.v1.user;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import org.springframework.http.HttpStatus;

@@ -1,13 +1,15 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.user;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.api.v1.user;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.DriverMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RequestMapping("/api/v1/user/driver")
 @RestController
@@ -15,13 +17,11 @@ public class DriverController extends AbstractController {
 
     private final DriverService driverService;
     private final DriverMapper driverMapper;
-    private final UserService userService;
 
     public DriverController(DriverService driverService, DriverMapper driverMapper, UserService userService) {
         super(userService);
         this.driverService = driverService;
         this.driverMapper = driverMapper;
-        this.userService = userService;
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -58,6 +58,12 @@ public class DriverController extends AbstractController {
     @GetMapping(value = "/done", params = "advertisement_id")
     public AdvertisementDTO finishAdvertisement(@RequestParam("advertisement_id") Long id, Authentication authentication) {
         return driverService.finishAdvertisement(id, getUser(authentication));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/recommended")
+    public Set<AdvertisementDTO> getRecommendedAdvertisements(Authentication authentication) {
+        return driverService.findRecommendedAdvertisements(getUser(authentication));
     }
 
 }

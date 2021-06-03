@@ -1,6 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 
 import java.util.Set;

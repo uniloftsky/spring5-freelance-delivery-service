@@ -1,8 +1,8 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.TypeDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.TypeDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;

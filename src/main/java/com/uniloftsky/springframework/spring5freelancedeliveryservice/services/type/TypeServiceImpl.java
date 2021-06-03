@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.TypeMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.TypeDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.TypeMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.TypeDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;

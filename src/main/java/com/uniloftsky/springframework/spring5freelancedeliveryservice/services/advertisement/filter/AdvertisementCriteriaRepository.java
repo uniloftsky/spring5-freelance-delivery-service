@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.AdvertisementMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 import org.springframework.data.domain.*;

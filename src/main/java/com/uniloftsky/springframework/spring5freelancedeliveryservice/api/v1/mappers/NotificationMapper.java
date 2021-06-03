@@ -1,4 +1,4 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers;
 
 import org.mapstruct.Mapper;
 

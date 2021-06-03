@@ -1,7 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

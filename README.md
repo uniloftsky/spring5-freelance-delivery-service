@@ -6,6 +6,8 @@ Used stack:
 - [OpenAPI](https://swagger.io/)
 - [MapStruct](https://mapstruct.org/)
 - [Auth0](https://auth0.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Heroku](https://www.heroku.com/home)
 
 
 Front-end is created and maintaned by [ThisSilenceIsMine](https://github.com/ThisSilenceIsMine). [Repo can be found there](https://github.com/ThisSilenceIsMine/freelance-delivery-service).
@@ -22,3 +24,7 @@ java -jar target/*.jar
 ```
 
 You can then access api documentation here: [http://localhost:8080/api](http://localhost:8080/api)
+
+## Heroku
+
+App has deployed to Heroku, so you can try it here: [https://https://spring5-delivery-service.herokuapp.com/api](https://spring5-delivery-service.herokuapp.com/api)
