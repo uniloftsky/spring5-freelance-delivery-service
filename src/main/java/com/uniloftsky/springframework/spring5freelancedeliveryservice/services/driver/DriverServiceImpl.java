@@ -1,16 +1,13 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.AdvertisementMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.DriverMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.*;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.DriverRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
@@ -25,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -60,6 +58,20 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public Set<Driver> findAll() {
         return new HashSet<>(driverRepository.findAll());
+    }
+
+    @Override
+    public Set<AdvertisementDTO> findRecommendedAdvertisements(User user) {
+        Driver driver = getUserDriver(user);
+        return advertisementService.findAll().stream().filter(e -> {
+            for (Type type : e.getTypes()) {
+                if (driver.getTypes().contains(type)) {
+                    return true;
+                }
+            }
+            return false;
+        }).map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toSet());
+
     }
 
     @Override

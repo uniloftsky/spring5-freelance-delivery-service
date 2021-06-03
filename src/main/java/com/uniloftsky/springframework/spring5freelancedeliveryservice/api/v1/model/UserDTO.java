@@ -1,4 +1,4 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;

@@ -1,4 +1,4 @@
-package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.user;
+package com.uniloftsky.springframework.spring5freelancedeliveryservice.controllers.api.v1.user;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;

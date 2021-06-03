@@ -1,8 +1,8 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.bootstrap;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.NotificationMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.UserMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.NotificationMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.UserMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.*;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.UserMetadata;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.NotificationRepository;
