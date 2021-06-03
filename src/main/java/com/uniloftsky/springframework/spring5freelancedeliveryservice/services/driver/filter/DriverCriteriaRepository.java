@@ -61,17 +61,17 @@ public class DriverCriteriaRepository {
                             "%" + driverSearchCriteria.getName().toLowerCase() + "%")
             );
         }
-        if (Objects.nonNull(driverSearchCriteria.getMaxExperience())) {
+        if (Objects.nonNull(driverSearchCriteria.getMax_experience())) {
             if (driverRoot.get("experience") != null) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(driverRoot.get("experience"),
-                        driverSearchCriteria.getMaxExperience())
+                        driverSearchCriteria.getMax_experience())
                 );
             }
         }
-        if (Objects.nonNull(driverSearchCriteria.getMinExperience())) {
+        if (Objects.nonNull(driverSearchCriteria.getMin_experience())) {
             if (driverRoot.get("experience") != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(driverRoot.get("experience"),
-                        driverSearchCriteria.getMinExperience())
+                        driverSearchCriteria.getMin_experience())
                 );
             }
         }

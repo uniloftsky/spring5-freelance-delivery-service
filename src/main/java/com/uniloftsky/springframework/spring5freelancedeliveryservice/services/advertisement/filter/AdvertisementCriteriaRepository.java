@@ -61,29 +61,29 @@ public class AdvertisementCriteriaRepository {
                             "%" + advertisementSearchCriteria.getTitle().toLowerCase() + "%")
             );
         }
-        if (Objects.nonNull(advertisementSearchCriteria.getDeliverFrom())) {
+        if (Objects.nonNull(advertisementSearchCriteria.getDeliver_from())) {
             predicates.add(
                     criteriaBuilder.like(criteriaBuilder.lower(advertisementRoot.get("deliverFrom")),
-                            "%" + advertisementSearchCriteria.getDeliverFrom().toLowerCase() + "%")
+                            "%" + advertisementSearchCriteria.getDeliver_from().toLowerCase() + "%")
             );
         }
-        if (Objects.nonNull(advertisementSearchCriteria.getDeliverTo())) {
+        if (Objects.nonNull(advertisementSearchCriteria.getDeliver_to())) {
             predicates.add(
                     criteriaBuilder.like(criteriaBuilder.lower(advertisementRoot.get("deliverTo")),
-                            "%" + advertisementSearchCriteria.getDeliverTo().toLowerCase() + "%")
+                            "%" + advertisementSearchCriteria.getDeliver_to().toLowerCase() + "%")
             );
         }
-        if (Objects.nonNull(advertisementSearchCriteria.getMaxPrice())) {
+        if (Objects.nonNull(advertisementSearchCriteria.getMax_price())) {
             if (advertisementRoot.get("price") != null) {
                 predicates.add(criteriaBuilder.lessThanOrEqualTo(advertisementRoot.get("price"),
-                        advertisementSearchCriteria.getMaxPrice())
+                        advertisementSearchCriteria.getMax_price())
                 );
             }
         }
-        if (Objects.nonNull(advertisementSearchCriteria.getMinPrice())) {
+        if (Objects.nonNull(advertisementSearchCriteria.getMin_price())) {
             if (advertisementRoot.get("price") != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(advertisementRoot.get("price"),
-                        advertisementSearchCriteria.getMinPrice())
+                        advertisementSearchCriteria.getMin_price())
                 );
             }
         }
