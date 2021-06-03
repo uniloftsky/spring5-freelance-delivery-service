@@ -37,6 +37,7 @@ public class Advertisement extends BaseEntity {
     private LocalDate date;
     private Integer period;
     private String description;
+
     private Status status = Status.ACTIVE;
     private String userId;
 }

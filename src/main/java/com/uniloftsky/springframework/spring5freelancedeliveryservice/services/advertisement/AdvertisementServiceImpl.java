@@ -1,7 +1,9 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.AdvertisementMapper;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.BadRequestException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
@@ -34,15 +36,17 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final UserService userService;
     private final DriverService driverService;
     private final AdvertisementMapper advertisementMapper;
+    private final DriverMapper driverMapper;
     private final NotificationService notificationService;
 
-    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementCriteriaRepository advertisementCriteriaRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService, NotificationService notificationService) {
+    public AdvertisementServiceImpl(AdvertisementRepository advertisementRepository, AdvertisementCriteriaRepository advertisementCriteriaRepository, AdvertisementMapper advertisementMapper, TypeService typeService, UserService userService, DriverService driverService, DriverMapper driverMapper, NotificationService notificationService) {
         this.advertisementRepository = advertisementRepository;
         this.advertisementCriteriaRepository = advertisementCriteriaRepository;
         this.advertisementMapper = advertisementMapper;
         this.typeService = typeService;
         this.userService = userService;
         this.driverService = driverService;
+        this.driverMapper = driverMapper;
         this.notificationService = notificationService;
     }
 
@@ -77,6 +81,19 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     public Set<AdvertisementDTO> findAllByUser(String userId) {
         return advertisementRepository.findAll().stream().filter(e -> e.getUserId().equals(userId)).map(advertisementMapper::advertisementToAdvertisementDTO).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<DriverDTO> findAllRecommendedDriversForAdvertisement(Long advertisementId) {
+        Advertisement advertisement = findById(advertisementId);
+        return driverService.findAll().stream().filter(e -> {
+            for (Type type : e.getTypes()) {
+                if (advertisement.getTypes().contains(type)) {
+                    return true;
+                }
+            }
+            return false;
+        }).map(driverMapper::driverToDriverDTO).collect(Collectors.toSet());
     }
 
     @Override

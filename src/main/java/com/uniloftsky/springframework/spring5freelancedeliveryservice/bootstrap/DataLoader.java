@@ -3,10 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.bootstrap
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.NotificationMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.mappers.UserMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.UserDTO;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.*;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.UserMetadata;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.NotificationRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
@@ -74,21 +71,22 @@ public class DataLoader implements CommandLineRunner {
         driver.setUserId("auth0|607d94db1c9629006daa7adf");
         driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
-        Advertisement advertisement = Advertisement.builder().title("Deliver").date(LocalDate.now()).deliverFrom("Бердичів").deliverTo("Житомир").description("Desc").types(types).price(100).build();
+        Advertisement advertisement = Advertisement.builder().title("Deliver").date(LocalDate.now()).deliverFrom("Бердичів").deliverTo("Житомир").description("Desc")
+                .types(types).price(100).status(Status.ACTIVE).build();
         advertisementService.save(advertisement, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement1");
         Thread.sleep(1000);
 
         Advertisement advertisement1 = Advertisement.builder().date(LocalDate.now()).deliverFrom("Київ").deliverTo("Львів").description("Desc").title("Доставка")
-                .types(types.stream().limit(2).collect(Collectors.toSet())).price(200).build();
+                .types(types.stream().limit(2).collect(Collectors.toSet())).price(200).status(Status.ACTIVE).build();
         advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement2");
         Thread.sleep(1000);
 
         Advertisement advertisement2 = Advertisement.builder().date(LocalDate.now()).deliverFrom("Житомир").deliverTo("Козятин").description("Desc").title("Repo")
-                .types(types.stream().skip(2).collect(Collectors.toSet())).price(1000).build();
+                .types(types.stream().skip(2).collect(Collectors.toSet())).price(1000).status(Status.ACTIVE).build();
         advertisementService.save(advertisement2, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement3");
@@ -105,7 +103,7 @@ public class DataLoader implements CommandLineRunner {
         Driver driver1 = new Driver();
         driver1.setDescription("I'm a uniloftsky driver");
         driver1.setExperience(20);
-        driver1.setTypes(types);
+        driver1.setTypes(types.stream().skip(2).collect(Collectors.toSet()));
         driver1.setUserId("auth0|60ae82c62f4b3000705f9717");
         driverService.save(driver1, userRepository.findById("auth0|60ae82c62f4b3000705f9717"));
 

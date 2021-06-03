@@ -1,6 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
@@ -19,6 +20,8 @@ public interface AdvertisementService {
     Set<Advertisement> findAll();
 
     Set<AdvertisementDTO> findAllByUser(String userId);
+
+    Set<DriverDTO> findAllRecommendedDriversForAdvertisement(Long advertisementId);
 
     Page<AdvertisementDTO> filter(AdvertisementPage advertisementPage, AdvertisementSearchCriteria advertisementSearchCriteria);
 
