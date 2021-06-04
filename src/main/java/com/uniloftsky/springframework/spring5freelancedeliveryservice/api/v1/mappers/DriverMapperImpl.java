@@ -1,11 +1,14 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DetailsDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.TypeDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Details;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Driver;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.driver.DriverService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -18,9 +21,11 @@ import java.util.Set;
 public class DriverMapperImpl implements DriverMapper {
 
     private final DriverService driverService;
+    private final AdvertisementService advertisementService;
 
-    public DriverMapperImpl(@Lazy DriverService driverService) {
+    public DriverMapperImpl(@Lazy DriverService driverService, @Lazy AdvertisementService advertisementService) {
         this.driverService = driverService;
+        this.advertisementService = advertisementService;
     }
 
     public DriverDTO driverToDriverDTO(Driver driver) {
@@ -154,7 +159,7 @@ public class DriverMapperImpl implements DriverMapper {
                 advertisementDTO.setTypes(new HashSet<>(set));
             }
 
-            advertisementDTO.setDetails(advertisement.getDetails());
+            advertisementDTO.setDetails(detailsToDetailsDTO(advertisement.getDetails()));
             advertisementDTO.setPrice(advertisement.getPrice());
             advertisementDTO.setDate(advertisement.getDate());
             advertisementDTO.setPeriod(advertisement.getPeriod());
@@ -182,7 +187,7 @@ public class DriverMapperImpl implements DriverMapper {
                 advertisement.setTypes(new HashSet<>(set));
             }
 
-            advertisement.setDetails(advertisementDTO.getDetails());
+            advertisement.setDetails(detailsDTOToDetails(advertisementDTO.getDetails()));
             advertisement.setPrice(advertisementDTO.getPrice());
             advertisement.setDate(advertisementDTO.getDate());
             advertisement.setPeriod(advertisementDTO.getPeriod());
@@ -190,6 +195,38 @@ public class DriverMapperImpl implements DriverMapper {
             advertisement.setStatus(advertisementDTO.getStatus());
             advertisement.setUserId(advertisementDTO.getUserId());
             return advertisement;
+        }
+    }
+
+    public DetailsDTO detailsToDetailsDTO(Details details) {
+        if (details == null) {
+            return null;
+        } else {
+            DetailsDTO detailsDTO = new DetailsDTO();
+            detailsDTO.setId(details.getId());
+            detailsDTO.setHeight(details.getHeight());
+            detailsDTO.setWidth(details.getWidth());
+            detailsDTO.setLength(details.getLength());
+            detailsDTO.setWeight(details.getWeight());
+            detailsDTO.setPeopleCount(details.getPeopleCount());
+            detailsDTO.setAdvertisementId(details.getAdvertisement().getId());
+            return detailsDTO;
+        }
+    }
+
+    public Details detailsDTOToDetails(DetailsDTO detailsDTO) {
+        if (detailsDTO == null) {
+            return null;
+        } else {
+            Details details = new Details();
+            details.setId(detailsDTO.getId());
+            details.setHeight(detailsDTO.getHeight());
+            details.setWidth(detailsDTO.getWidth());
+            details.setLength(detailsDTO.getLength());
+            details.setWeight(detailsDTO.getWeight());
+            details.setPeopleCount(detailsDTO.getPeopleCount());
+            details.setAdvertisement(advertisementService.findById(detailsDTO.getAdvertisementId()));
+            return details;
         }
     }
 }

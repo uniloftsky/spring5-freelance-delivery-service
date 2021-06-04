@@ -74,6 +74,7 @@ public class DataLoader implements CommandLineRunner {
 
         Advertisement advertisement = Advertisement.builder().title("Deliver").date(LocalDate.now()).deliverFrom("Бердичів").deliverTo("Житомир").description("Desc")
                 .types(types).price(100).status(Status.ACTIVE).build();
+        advertisement.addDetails(Details.builder().peopleCount(10).build());
         advertisementService.save(advertisement, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement1");
@@ -81,6 +82,7 @@ public class DataLoader implements CommandLineRunner {
 
         Advertisement advertisement1 = Advertisement.builder().date(LocalDate.now()).deliverFrom("Київ").deliverTo("Львів").description("Desc").title("Доставка")
                 .types(types.stream().limit(2).collect(Collectors.toSet())).price(200).status(Status.ACTIVE).build();
+        advertisement1.addDetails(Details.builder().height(10).weight(20).build());
         advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement2");
