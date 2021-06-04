@@ -18,7 +18,7 @@ public class Advertisement extends BaseEntity {
 
     private String title;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Type> types = new HashSet<>();
 
     private String deliverFrom;
