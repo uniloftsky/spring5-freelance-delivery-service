@@ -1,13 +1,15 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 public class Details extends BaseEntity {
 
