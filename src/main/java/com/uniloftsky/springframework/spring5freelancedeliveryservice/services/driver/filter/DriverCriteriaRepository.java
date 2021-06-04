@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,10 +33,11 @@ public class DriverCriteriaRepository {
     public Page<DriverDTO> findAllWithFilters(DriverPage driverPage,
                                               DriverSearchCriteria driverSearchCriteria) {
         CriteriaQuery<Driver> criteriaQuery = criteriaBuilder.createQuery(Driver.class);
-        Root<Driver> advertisementRoot = criteriaQuery.from(Driver.class);
-        Predicate predicate = getPredicate(driverSearchCriteria, advertisementRoot);
+        Root<Driver> driverRoot = criteriaQuery.from(Driver.class);
+        fetchOtherTables(driverRoot);
+        Predicate predicate = getPredicate(driverSearchCriteria, driverRoot);
         criteriaQuery.where(predicate);
-        setOrder(driverPage, criteriaQuery, advertisementRoot);
+        setOrder(driverPage, criteriaQuery, driverRoot);
 
         TypedQuery<Driver> typedQuery = entityManager.createQuery(criteriaQuery);
         typedQuery.setFirstResult(driverPage.getPageNumber() * driverPage.getPageSize());
@@ -105,6 +103,11 @@ public class DriverCriteriaRepository {
         Root<Driver> countRoot = countQuery.from(Driver.class);
         countQuery.select(criteriaBuilder.count(countRoot)).where(predicate);
         return entityManager.createQuery(countQuery).getSingleResult();
+    }
+
+    private void fetchOtherTables(Root<Driver> driverRoot) {
+        driverRoot.fetch("types", JoinType.LEFT);
+        driverRoot.fetch("advertisements", JoinType.LEFT);
     }
 
 }

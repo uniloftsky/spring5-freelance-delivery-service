@@ -3,6 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.controlle
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.DriverMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementPage;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementSearchCriteria;
@@ -52,6 +53,11 @@ public class MainController {
     @GetMapping(value = "/api/v1/public/advertisements/recommended", params = "advertisement_id")
     public Set<DriverDTO> getRecommendedDriversForAdvertisement(@RequestParam("advertisement_id") Long advertisementId) {
         return advertisementService.findAllRecommendedDriversForAdvertisement(advertisementId);
+    }
+
+    @GetMapping("/api/v1/public/advertisements/{id}")
+    public Advertisement getAdvertisement(@PathVariable("id") Long id) {
+        return advertisementService.findById(id);
     }
 
 }

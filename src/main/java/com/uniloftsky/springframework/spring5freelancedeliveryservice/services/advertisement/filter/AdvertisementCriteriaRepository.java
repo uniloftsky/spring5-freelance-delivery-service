@@ -9,10 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +34,7 @@ public class AdvertisementCriteriaRepository {
                                                      AdvertisementSearchCriteria advertisementSearchCriteria) {
         CriteriaQuery<Advertisement> criteriaQuery = criteriaBuilder.createQuery(Advertisement.class);
         Root<Advertisement> advertisementRoot = criteriaQuery.from(Advertisement.class);
+        fetchOtherTables(advertisementRoot);
         Predicate predicate = getPredicate(advertisementSearchCriteria, advertisementRoot);
         criteriaQuery.where(predicate);
         setOrder(advertisementPage, criteriaQuery, advertisementRoot);
@@ -122,6 +120,12 @@ public class AdvertisementCriteriaRepository {
         Root<Advertisement> countRoot = countQuery.from(Advertisement.class);
         countQuery.select(criteriaBuilder.count(countRoot)).where(predicate);
         return entityManager.createQuery(countQuery).getSingleResult();
+    }
+
+    private void fetchOtherTables(Root<Advertisement> advertisementRoot) {
+        advertisementRoot.fetch("types", JoinType.LEFT);
+        advertisementRoot.fetch("details", JoinType.LEFT);
+        advertisementRoot.fetch("executor", JoinType.LEFT);
     }
 
 }
