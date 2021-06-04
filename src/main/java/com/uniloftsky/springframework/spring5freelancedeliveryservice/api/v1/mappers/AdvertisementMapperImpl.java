@@ -70,8 +70,10 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             if (set != null) {
                 advertisement.setTypes(new HashSet(set));
             }
+            if (advertisementDTO.getDetails() != null) {
+                advertisement.setDetails(detailsDTOToDetails(advertisementDTO.getDetails()));
+            }
 
-            advertisement.setDetails(detailsDTOToDetails(advertisementDTO.getDetails()));
             advertisement.setPrice(advertisementDTO.getPrice());
             advertisement.setDate(advertisementDTO.getDate());
             advertisement.setPeriod(advertisementDTO.getPeriod());
@@ -109,7 +111,9 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             details.setLength(detailsDTO.getLength());
             details.setWeight(detailsDTO.getWeight());
             details.setPeopleCount(detailsDTO.getPeopleCount());
-            details.setAdvertisement(advertisementService.findById(detailsDTO.getAdvertisementId()));
+            if(detailsDTO.getAdvertisementId() != null) {
+                details.setAdvertisement(advertisementService.findById(detailsDTO.getAdvertisementId()));
+            }
             return details;
         }
     }

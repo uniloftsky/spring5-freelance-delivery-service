@@ -41,7 +41,7 @@ public class Advertisement extends BaseEntity {
     private Status status = Status.ACTIVE;
     private String userId;
 
-    public void addDetails(Details details) {
+    public void setDetails(Details details) {
         details.setAdvertisement(this);
         this.details = details;
     }
