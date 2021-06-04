@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@Tag(name = "user's driver", description = "Controller what provides end-points to work with user's driver. Authentication is required.")
+@Tag(name = "User's driver", description = "Controller what provides end-points to work with user's driver. Authentication is required.")
 @RequestMapping("/api/v1/user/driver")
 @RestController
 public class DriverController extends AbstractController {
@@ -66,7 +66,7 @@ public class DriverController extends AbstractController {
         return driverService.patch(driverDTO, getUser(authentication));
     }
 
-    @Operation(summary = "Respond by driver on advertisement")
+    @Operation(summary = "Respond by driver on advertisement.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "401", description = "Auth needed. Provide authentication header with Bearer token."),
             @ApiResponse(responseCode = "200", description = "Successful operation."),

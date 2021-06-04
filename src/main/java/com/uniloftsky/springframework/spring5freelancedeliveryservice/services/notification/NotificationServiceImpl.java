@@ -1,6 +1,7 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification;
 
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.UserDTO;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.exceptions.ResourceNotFoundException;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.NotificationRepository;
@@ -32,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
         Optional<Notification> notificationOptional = userService.findById(userId).getUser_metadata().getNotifications()
                 .stream().filter(e -> e.getId().equals(id)).findFirst();
         if (notificationOptional.isEmpty()) {
-            throw new RuntimeException("User has not expected notification!");
+            throw new ResourceNotFoundException("User has not expected notification!");
         } else {
             return notificationOptional.get();
         }
@@ -66,7 +67,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void delete(Long notificationId, User user)  {
+    public void delete(Long notificationId, User user) {
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getNotifications().removeIf(e -> e.getId().equals(notificationId));
         userService.save(user, userDTO);
