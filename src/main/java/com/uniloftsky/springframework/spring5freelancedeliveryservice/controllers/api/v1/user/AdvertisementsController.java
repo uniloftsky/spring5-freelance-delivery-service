@@ -33,7 +33,6 @@ public class AdvertisementsController extends AbstractController {
         this.advertisementMapper = advertisementMapper;
     }
 
-
     @Operation(summary = "Get all advertisements what belongs to a user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "401", description = "Auth needed. Provide authentication header with Bearer token."),
