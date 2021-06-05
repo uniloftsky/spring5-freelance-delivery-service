@@ -24,7 +24,7 @@ public class Advertisement extends BaseEntity {
     private String deliverFrom;
     private String deliverTo;
 
-    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.PERSIST)
     private Details details;
 
     @ManyToOne
@@ -40,4 +40,9 @@ public class Advertisement extends BaseEntity {
 
     private Status status = Status.ACTIVE;
     private String userId;
+
+    public void setDetails(Details details) {
+        details.setAdvertisement(this);
+        this.details = details;
+    }
 }
