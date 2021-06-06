@@ -168,6 +168,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
     }
 
+    @Override
+    public AdvertisementDTO blockAdvertisement(Long advertisementId, Notification notification) {
+        Advertisement advertisement = findById(advertisementId);
+        User user = userService.findById(advertisement.getUserId());
+        DTOHandler.createNotificationOnEvent(user, notification, notificationService);
+        advertisement.setStatus(Status.BLOCKED);
+        return save(advertisement, user);
+    }
+
     private Advertisement resaveAdvertisementToUser(Advertisement advertisement, User user) {
         DTOHandler.patchAdvertisementTypes(advertisement, user, typeService);
         advertisement.setUserId(user.getUser_id());

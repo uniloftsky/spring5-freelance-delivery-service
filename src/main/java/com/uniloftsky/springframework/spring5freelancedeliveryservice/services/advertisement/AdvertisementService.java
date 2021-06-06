@@ -3,6 +3,7 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.services.
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.AdvertisementDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.DriverDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Advertisement;
+import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Notification;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.User;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.filter.AdvertisementPage;
@@ -39,4 +40,5 @@ public interface AdvertisementService {
 
     AdvertisementDTO appointDriverToAdvertisement(Long advertisementId, Long driverId, String userId);
 
+    AdvertisementDTO blockAdvertisement(Long advertisementId, Notification notification);
 }
