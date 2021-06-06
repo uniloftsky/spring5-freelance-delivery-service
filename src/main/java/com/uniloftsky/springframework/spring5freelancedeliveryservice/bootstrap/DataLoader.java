@@ -10,7 +10,6 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.d
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.notification.NotificationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -18,7 +17,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Profile("default")
 @Slf4j
 @Component
 public class DataLoader implements CommandLineRunner {

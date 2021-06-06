@@ -159,6 +159,7 @@ public class DriverMapperImpl implements DriverMapper {
                 advertisementDTO.setTypes(new HashSet<>(set));
             }
 
+            advertisementDTO.setPhoneNumber(advertisement.getPhoneNumber());
             advertisementDTO.setDetails(detailsToDetailsDTO(advertisement.getDetails()));
             advertisementDTO.setPrice(advertisement.getPrice());
             advertisementDTO.setDate(advertisement.getDate());
@@ -187,6 +188,7 @@ public class DriverMapperImpl implements DriverMapper {
                 advertisement.setTypes(new HashSet<>(set));
             }
 
+            advertisement.setPhoneNumber(advertisementDTO.getPhoneNumber());
             advertisement.setDetails(detailsDTOToDetails(advertisementDTO.getDetails()));
             advertisement.setPrice(advertisementDTO.getPrice());
             advertisement.setDate(advertisementDTO.getDate());

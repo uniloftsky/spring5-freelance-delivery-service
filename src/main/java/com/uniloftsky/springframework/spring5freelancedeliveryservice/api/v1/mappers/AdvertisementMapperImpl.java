@@ -43,6 +43,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
             }
 
             advertisementDTO.setDetails(detailsToDetailsDTO(advertisement.getDetails()));
+            advertisementDTO.setPhoneNumber(advertisement.getPhoneNumber());
             advertisementDTO.setPrice(advertisement.getPrice());
             advertisementDTO.setDate(advertisement.getDate());
             advertisementDTO.setPeriod(advertisement.getPeriod());
@@ -74,6 +75,7 @@ public class AdvertisementMapperImpl implements AdvertisementMapper {
                 advertisement.setDetails(detailsDTOToDetails(advertisementDTO.getDetails()));
             }
 
+            advertisement.setPhoneNumber(advertisementDTO.getPhoneNumber());
             advertisement.setPrice(advertisementDTO.getPrice());
             advertisement.setDate(advertisementDTO.getDate());
             advertisement.setPeriod(advertisementDTO.getPeriod());

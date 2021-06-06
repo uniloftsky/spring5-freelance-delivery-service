@@ -47,6 +47,9 @@ public class AdvertisementDTO {
     private LocalDate date;
     private Integer period;
 
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+
     @NotBlank
     private String description;
 
