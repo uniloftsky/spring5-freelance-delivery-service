@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Profile("default")
 @Slf4j
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -36,7 +37,6 @@ public class DataLoader implements CommandLineRunner {
         this.driverService = driverService;
     }
 
-    @Profile("default")
     @Override
     public void run(String... args) throws InterruptedException {
 
