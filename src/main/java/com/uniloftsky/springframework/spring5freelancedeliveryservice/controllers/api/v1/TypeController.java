@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -44,6 +45,7 @@ public class TypeController {
             @ApiResponse(responseCode = "200", description = "Successful operation.")
     })
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('create:types')")
     @PostMapping("/admin/types")
     public TypeDTO createType(@Parameter(description = "Type what will be created") @RequestBody TypeDTO typeDTO) {
         return typeService.save(typeDTO);
@@ -56,6 +58,7 @@ public class TypeController {
             @ApiResponse(responseCode = "404", description = "Cannot find type with specified ID")
     })
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('patch:types')")
     @PatchMapping("/admin/types/{id}")
     public TypeDTO patchType(@Parameter(description = "Fields of type to patch")@RequestBody TypeDTO typeDTO, @Parameter(description = "ID of type what will be patched") @PathVariable("id") Long id) {
         return typeService.patch(typeDTO, id);

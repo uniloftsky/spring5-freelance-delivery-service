@@ -1,11 +1,8 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.bootstrap;
 
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.NotificationMapper;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mappers.UserMapper;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.model.UserDTO;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.*;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.auth0.UserMetadata;
-import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.NotificationRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.TypeRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.repositories.UserRepository;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.advertisement.AdvertisementService;
@@ -27,22 +24,16 @@ public class DataLoader implements CommandLineRunner {
 
     private final TypeRepository typeRepository;
     private final UserRepository userRepository;
-    private final NotificationMapper notificationMapper;
-    private final NotificationRepository notificationRepository;
     private final NotificationService notificationService;
     private final AdvertisementService advertisementService;
     private final DriverService driverService;
-    private final UserMapper userMapper;
 
-    public DataLoader(TypeRepository typeRepository, UserRepository userRepository, NotificationMapper notificationMapper, NotificationRepository notificationRepository, NotificationService notificationService, AdvertisementService advertisementService, DriverService driverService, UserMapper userMapper) {
+    public DataLoader(TypeRepository typeRepository, UserRepository userRepository, NotificationService notificationService, AdvertisementService advertisementService, DriverService driverService) {
         this.typeRepository = typeRepository;
         this.userRepository = userRepository;
-        this.notificationMapper = notificationMapper;
-        this.notificationRepository = notificationRepository;
         this.notificationService = notificationService;
         this.advertisementService = advertisementService;
         this.driverService = driverService;
-        this.userMapper = userMapper;
     }
 
     @Profile("default")
