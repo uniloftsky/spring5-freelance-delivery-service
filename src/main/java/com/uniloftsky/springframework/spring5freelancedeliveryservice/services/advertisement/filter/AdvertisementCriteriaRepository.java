@@ -99,6 +99,18 @@ public class AdvertisementCriteriaRepository {
                     advertisementRoot.get("status"), advertisementSearchCriteria.getStatus())
             );
         }
+        if (Objects.nonNull(advertisementSearchCriteria.getUser_id())) {
+            predicates.add(criteriaBuilder.equal(
+                    advertisementRoot.get("userId"), advertisementSearchCriteria.getUser_id()
+            ));
+        }
+        if (Objects.nonNull(advertisementSearchCriteria.getDriver_id())) {
+            if (advertisementRoot.get("executor") != null) {
+                predicates.add(criteriaBuilder.equal(
+                        advertisementRoot.get("executor").get("id"), advertisementSearchCriteria.getDriver_id()
+                ));
+            }
+        }
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 

@@ -15,5 +15,7 @@ public class AdvertisementSearchCriteria {
     private Integer max_price;
     private Integer min_price;
     private Status status;
+    private String user_id;
+    private Long driver_id;
 
 }
