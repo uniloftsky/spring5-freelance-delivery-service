@@ -27,4 +27,4 @@ You can then access api documentation here: [http://localhost:8080/api](http://l
 
 ## Heroku
 
-App has deployed to Heroku, so you can try it here: [https://spring5-delivery-service.herokuapp.com/api](https://spring5-delivery-service.herokuapp.com/api)
+The app has been deployed to Heroku, so you can try it here: [https://spring5-delivery-service.herokuapp.com/api](https://spring5-delivery-service.herokuapp.com/api)
