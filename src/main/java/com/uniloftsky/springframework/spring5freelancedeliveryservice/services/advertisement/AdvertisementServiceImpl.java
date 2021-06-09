@@ -24,7 +24,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -180,9 +179,6 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private Advertisement resaveAdvertisementToUser(Advertisement advertisement, User user) {
         DTOHandler.patchAdvertisementTypes(advertisement, user, typeService);
         advertisement.setUserId(user.getUser_id());
-        if (advertisement.getDate() == null) {
-            advertisement.setDate(LocalDate.now());
-        }
         advertisementRepository.save(advertisement);
         UserDTO userDTO = user.clone();
         userDTO.getUserMetadata().getAdvertisements().removeIf(e -> e.getId().equals(advertisement.getId()));
