@@ -127,6 +127,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             handleAdvertisementDetails(advertisementDTO.getDetails(), patchedAdvertisement, patchedAdvertisementDTO);
         }
         patchedAdvertisement = advertisementMapper.advertisementDTOToAdvertisement(patchedAdvertisementDTO);
+        patchedAdvertisement.setStatus(Status.ACTIVE);
         save(patchedAdvertisement, user);
         return advertisementMapper.advertisementToAdvertisementDTO(patchedAdvertisement);
     }
