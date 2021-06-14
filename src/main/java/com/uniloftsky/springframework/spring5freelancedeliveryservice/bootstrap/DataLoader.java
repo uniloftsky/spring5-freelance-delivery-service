@@ -66,7 +66,7 @@ public class DataLoader implements CommandLineRunner {
         driverService.save(driver, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         Advertisement advertisement = Advertisement.builder().title("Deliver").date(LocalDate.now()).deliverFrom("Бердичів").deliverTo("Житомир").description("Desc")
-                .types(types).price(100).status(Status.ACTIVE).build();
+                .types(types).price(100).status(Status.ACTIVE).phoneNumber("0971279332").build();
         advertisement.setDetails(Details.builder().peopleCount(10).build());
         advertisementService.save(advertisement, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
@@ -74,7 +74,7 @@ public class DataLoader implements CommandLineRunner {
         Thread.sleep(1000);
 
         Advertisement advertisement1 = Advertisement.builder().date(LocalDate.now()).deliverFrom("Київ").deliverTo("Львів").description("Desc").title("Доставка")
-                .types(types.stream().limit(2).collect(Collectors.toSet())).price(200).status(Status.ACTIVE).build();
+                .types(types.stream().limit(2).collect(Collectors.toSet())).price(200).status(Status.ACTIVE).phoneNumber("0679112390").build();
         advertisement1.setDetails(Details.builder().height(10).weight(20).build());
         advertisementService.save(advertisement1, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
@@ -82,7 +82,7 @@ public class DataLoader implements CommandLineRunner {
         Thread.sleep(1000);
 
         Advertisement advertisement2 = Advertisement.builder().date(LocalDate.now()).deliverFrom("Житомир").deliverTo("Козятин").description("Desc").title("Repo")
-                .types(types.stream().skip(2).collect(Collectors.toSet())).price(1000).status(Status.ACTIVE).build();
+                .types(types.stream().skip(2).collect(Collectors.toSet())).price(1000).status(Status.ACTIVE).phoneNumber("0677777777").build();
         advertisementService.save(advertisement2, userRepository.findById("auth0|607d94db1c9629006daa7adf"));
 
         log.info("Saved advertisement3");

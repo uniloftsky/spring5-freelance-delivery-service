@@ -43,7 +43,9 @@ public class Advertisement extends BaseEntity {
     private String userId;
 
     public void setDetails(Details details) {
-        details.setAdvertisement(this);
-        this.details = details;
+        if (details != null) {
+            details.setAdvertisement(this);
+            this.details = details;
+        }
     }
 }
