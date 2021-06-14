@@ -24,7 +24,7 @@ public class Advertisement extends BaseEntity {
     private String deliverFrom;
     private String deliverTo;
 
-    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.ALL)
     private Details details;
 
     @ManyToOne
