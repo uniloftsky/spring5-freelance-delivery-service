@@ -1,7 +1,6 @@
 package com.uniloftsky.springframework.spring5freelancedeliveryservice.model;
 
 import lombok.*;
-import org.json.simple.JSONArray;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Entity
 public class Advertisement extends BaseEntity {
 
@@ -30,8 +30,8 @@ public class Advertisement extends BaseEntity {
     @ManyToOne
     private Driver executor;
 
-    @Transient
-    private JSONArray responded = new JSONArray();
+    @ElementCollection
+    private Set<Long> responded = new HashSet<>();
 
     private Integer price;
     private LocalDate date;

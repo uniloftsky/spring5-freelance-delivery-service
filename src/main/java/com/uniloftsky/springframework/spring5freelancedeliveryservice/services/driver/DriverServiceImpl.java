@@ -18,7 +18,6 @@ import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.n
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.type.TypeService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.services.user.UserService;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.utils.DTOHandler;
-import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -145,7 +144,7 @@ public class DriverServiceImpl implements DriverService {
         Driver driver = getUserDriver(user);
         Advertisement advertisement = advertisementService.findById(advertisementId);
         User client = userService.findById(advertisement.getUserId());
-        advertisement.getResponded().add(getRespondedDriverJSON(driver));
+        advertisement.getResponded().add(driver.getId());
         advertisementService.save(advertisement, client);
         DTOHandler.createNotificationOnEvent(client, Notification.builder().message("Водій " + driver.getName() + " відгукнувся на ваше замовлення.").title("Новий відгук на замовлення!").build(), notificationService);
         return advertisementMapper.advertisementToAdvertisementDTO(advertisement);
@@ -180,16 +179,6 @@ public class DriverServiceImpl implements DriverService {
         return advertisementOptional.get();
     }
 
-    private JSONObject getRespondedDriverJSON(Driver driver) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", driver.getId());
-        jsonObject.put("name", driver.getName());
-        jsonObject.put("description", driver.getDescription());
-        jsonObject.put("experience", driver.getExperience());
-        jsonObject.put("types", driver.getTypes());
-        return jsonObject;
-    }
-
     private void changeStatusOfAdvertisementWithNotification(Driver driver, Advertisement advertisement, Status status, Notification notification, User user) {
         User client = userService.findById(advertisement.getUserId());
         DTOHandler.createNotificationOnEvent(client, notification, notificationService);
@@ -197,17 +186,5 @@ public class DriverServiceImpl implements DriverService {
         advertisementService.save(advertisement, client);
         save(driver, user);
     }
-
-/*    private Advertisement changeAdvertisementStatusWithNotification(Status status, User user, Long advertisementId, String notificationTitle, String notificationMessage) {
-        Driver driver = getUserDriver(user);
-        Advertisement advertisement = findDriverAdvertisement(advertisementId, driver);
-        User client = userService.findById(advertisement.getUserId());
-        DTOHandler.createNotificationOnEvent(client, notificationTitle, notificationMessage, notificationService);
-        advertisement.setStatus(status);
-        advertisementService.save(advertisement, client);
-        save(driver, user);
-        return advertisement;
-    }*/
-
 
 }

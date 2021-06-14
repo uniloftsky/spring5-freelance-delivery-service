@@ -3,21 +3,19 @@ package com.uniloftsky.springframework.spring5freelancedeliveryservice.api.v1.mo
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Status;
 import com.uniloftsky.springframework.spring5freelancedeliveryservice.model.Type;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.json.simple.JSONArray;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class AdvertisementDTO {
 
     private Long id;
@@ -41,7 +39,7 @@ public class AdvertisementDTO {
     @JsonProperty("driver_id")
     private Long driverId;
 
-    private JSONArray responded = new JSONArray();
+    private Set<Long> responded = new HashSet<>();
 
     private Integer price;
     private LocalDate date;
