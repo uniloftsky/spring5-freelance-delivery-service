@@ -41,7 +41,7 @@ public class AdvertisementDTO {
 
     private Set<Long> responded = new HashSet<>();
 
-    private Integer price;
+    private Double price;
     private LocalDate date;
     private Integer period;
 
